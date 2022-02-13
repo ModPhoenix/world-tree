@@ -1,15 +1,35 @@
 use std::net::TcpListener;
 
-use actix_web::{dev::Server, web, App, HttpResponse, HttpServer};
+use actix_web::{
+  dev::Server,
+  guard,
+  web::{self, Data},
+  App, HttpServer, Result,
+};
 
-async fn health_check() -> HttpResponse {
-  HttpResponse::Ok().finish()
-}
+use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use handlers::{graphql, graphql_playground, health_check};
+use model::QueryRoot;
+
+mod handlers;
+mod model;
 
 pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
-  let server = HttpServer::new(|| App::new().route("/health_check", web::get().to(health_check)))
-    .listen(listener)?
-    .run();
+  let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription).finish();
+
+  let server = HttpServer::new(move || {
+    App::new()
+      .app_data(Data::new(schema.clone()))
+      .route("/health_check", web::get().to(health_check))
+      .service(web::resource("/graphql").guard(guard::Post()).to(graphql))
+      .service(
+        web::resource("/graphql")
+          .guard(guard::Get())
+          .to(graphql_playground),
+      )
+  })
+  .listen(listener)?
+  .run();
 
   Ok(server)
 }
