@@ -7,15 +7,15 @@ use actix_web::{
   App, HttpServer, Result,
 };
 
-use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+use async_graphql::{EmptySubscription, Schema};
 use handlers::{graphql, graphql_playground, health_check};
-use model::QueryRoot;
+use model::{MutationRoot, QueryRoot};
 
 mod handlers;
 mod model;
 
 pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
-  let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription).finish();
+  let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription).finish();
 
   let server = HttpServer::new(move || {
     App::new()
