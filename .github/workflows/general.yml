@@ -93,7 +93,7 @@ jobs:
           - 5432:5432
     env:
       SQLX_VERSION: 0.5.10
-      SQLX_FEATURES: native-tls,postgres
+      SQLX_FEATURES: [native-tls, postgres]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -177,7 +177,7 @@ jobs:
           - 5432:5432
     env:
       SQLX_VERSION: 0.5.10
-      SQLX_FEATURES: native-tls,postgres
+      SQLX_FEATURES: [native-tls, postgres]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
