@@ -1,6 +1,12 @@
 name: coverage
 
 on: [push]
+
+env:
+  SQLX_VERSION: 0.5.10
+  SQLX_FEATURES_RUNTIME: native-tls
+  SQLX_FEATURES: postgres
+
 jobs:
   coverage:
     name: Code coverage
@@ -14,9 +20,6 @@ jobs:
           POSTGRES_DB: postgres
         ports:
           - 5432:5432
-    env:
-      SQLX_VERSION: 0.5.10
-      SQLX_FEATURES: postgres
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -33,7 +36,7 @@ jobs:
         with:
           path: |
             ~/.cargo/bin/sqlx
-          key: ${{ runner.os }}-sqlx-${{ env.SQLX_VERSION }}-${{ env.SQLX_FEATURES }}
+          key: ${{ runner.os }}-sqlx-${{ env.SQLX_VERSION }}-${{ env.SQLX_FEATURES_RUNTIME }}-${{ env.SQLX_FEATURES }}
 
       - name: Install sqlx-cli
         uses: actions-rs/cargo@v1
@@ -44,7 +47,7 @@ jobs:
             sqlx-cli
             --force
             --version=${{ env.SQLX_VERSION }}
-            --features=${{ env.SQLX_FEATURES }}
+            --features=${{ env.SQLX_FEATURES_RUNTIME }},${{ env.SQLX_FEATURES }}
             --no-default-features
             --locked
       - name: Migrate database
