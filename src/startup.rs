@@ -8,12 +8,15 @@ use actix_web::{
 };
 
 use async_graphql::{EmptySubscription, Schema};
+use sqlx::PgPool;
 
 use crate::handlers::{graphql, graphql_playground, health_check};
-use crate::model::{MutationRoot, QueryRoot};
+use crate::schema::{MutationRoot, QueryRoot};
 
-pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
-  let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription).finish();
+pub fn run(listener: TcpListener, db_pool: PgPool) -> Result<Server, std::io::Error> {
+  let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription)
+    .data(db_pool)
+    .finish();
 
   let server = HttpServer::new(move || {
     App::new()
