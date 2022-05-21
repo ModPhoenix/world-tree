@@ -1,8 +1,7 @@
 use async_graphql::*;
 use chrono::Utc;
-use uuid::Uuid;
 
-use crate::utils::get_db_pool;
+use crate::{models::user::User, utils::get_db_pool};
 
 pub type GraphqlSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
@@ -10,8 +9,19 @@ pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
-  async fn test(&self) -> String {
-    "test".to_string()
+  async fn users(&self, ctx: &Context<'_>) -> Result<Vec<User>> {
+    let pool = get_db_pool(ctx);
+
+    let users = sqlx::query_as!(
+      User,
+      r#"
+SELECT * FROM users
+"#
+    )
+    .fetch_all(pool)
+    .await?;
+
+    Ok(users)
   }
 }
 
@@ -22,27 +32,27 @@ impl MutationRoot {
   async fn sign_up(
     &self,
     ctx: &Context<'_>,
-    email: String,
-    username: String,
-    password: String,
-  ) -> String {
+    #[graphql(validator(email))] email: String,
+    #[graphql(validator(min_length = 2))] username: String,
+    #[graphql(validator(min_length = 8))] password: String,
+  ) -> Result<String> {
     let pool = get_db_pool(ctx);
 
-    sqlx::query!(
+    let _ = sqlx::query!(
       r#"
 INSERT INTO users (id, email, username, password, created_at)
 VALUES ($1, $2, $3, $4, $5)
 "#,
-      Uuid::new_v4(),
+      uuid::Uuid::new_v4(),
       email,
       username,
       password,
       Utc::now()
     )
     .execute(pool)
-    .await;
+    .await?;
 
-    "sign up".to_string()
+    Ok("sign up".to_string())
   }
 
   async fn sign_in(&self, _email: String, _password: String) -> String {
