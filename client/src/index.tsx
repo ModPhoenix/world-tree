@@ -1,13 +1,21 @@
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+
+import { theme } from 'styles';
 
 import { App } from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <CssBaseline enableColorScheme />
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
 );
 

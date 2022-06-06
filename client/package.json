@@ -10,11 +10,19 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0 --fix"
   },
   "dependencies": {
+    "@mui/icons-material": "5.8.2",
+    "@mui/material": "5.8.2",
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
+    "@mui/styled-engine-sc": "5.8.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-scripts": "5.0.1",
+    "styled-components": "5.3.5",
     "typescript": "4.7.3",
     "web-vitals": "2.1.4"
+  },
+  "resolutions": {
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.4",
