@@ -68,5 +68,21 @@ module.exports = {
       'error',
       { props: 'never', children: 'never' },
     ], // disallow unnecessary curly braces in JSX props and/or children
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: 'styled-components',
+            message: 'Please import from styled-components/macro.',
+          },
+        ],
+        patterns: [
+          '!styled-components/macro',
+          '@mui/*/*/*',
+          '!@mui/material/test-utils/*',
+        ],
+      },
+    ], // styled-components enforce macro imports
   },
 };
