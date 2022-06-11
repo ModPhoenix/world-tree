@@ -1,9 +1,12 @@
+import { ApolloProvider } from '@apollo/client';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
+import { client } from 'api';
+import { AuthProvider } from 'contexts';
 import { theme } from 'styles';
 
 import { App } from './App';
@@ -16,7 +19,11 @@ root.render(
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
       <BrowserRouter>
-        <App />
+        <ApolloProvider client={client}>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </ApolloProvider>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>,

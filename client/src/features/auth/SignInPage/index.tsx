@@ -4,7 +4,9 @@ import Typography from '@mui/material/Typography';
 import { ReactElement } from 'react';
 import styled from 'styled-components/macro';
 
-import { SignInForm } from '../SignInForm';
+import { useAuth } from 'hooks';
+
+import { SignInForm, SignInFormValues } from '../SignInForm';
 
 const SignInPageW = styled.div`
   display: flex;
@@ -20,6 +22,12 @@ const AuthFormPaper = styled(Paper)`
 `;
 
 export function SignInPage(): ReactElement {
+  const { signIn } = useAuth();
+
+  async function onSubmit(data: SignInFormValues) {
+    await signIn?.(data);
+  }
+
   return (
     <SignInPageW>
       <Typography variant="h4" gutterBottom>
@@ -29,7 +37,7 @@ export function SignInPage(): ReactElement {
         Or <Link href="#">create account</Link>
       </Typography>
       <AuthFormPaper>
-        <SignInForm />
+        <SignInForm onSubmit={onSubmit} />
       </AuthFormPaper>
     </SignInPageW>
   );
