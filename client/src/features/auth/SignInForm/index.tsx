@@ -41,6 +41,7 @@ export function SignInForm({ onSubmit }: SignInFormProps): ReactElement {
               label="Email address"
               variant="outlined"
               fullWidth
+              required
             />
           )}
         />
@@ -56,6 +57,7 @@ export function SignInForm({ onSubmit }: SignInFormProps): ReactElement {
               label="Password"
               variant="outlined"
               fullWidth
+              required
             />
           )}
         />

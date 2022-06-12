@@ -29,6 +29,8 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
 
   const [signInMutation, { client }] = useSignInMutation();
 
+  client.onResetStore(async () => setAccessToken(null));
+
   async function signIn(credentials: SignInMutationVariables) {
     const { data } = await signInMutation({ variables: credentials });
 
