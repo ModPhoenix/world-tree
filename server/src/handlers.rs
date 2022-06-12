@@ -1,16 +1,29 @@
-use actix_web::{web, HttpResponse, Result};
+use actix_web::{web, HttpRequest, HttpResponse, Result};
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
 
 use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse};
 
-use crate::schema::GraphqlSchema;
+use crate::{models::jwt::get_claims_from_req, schema::GraphqlSchema};
 
 pub async fn health_check() -> HttpResponse {
   HttpResponse::Ok().finish()
 }
 
-pub async fn graphql(schema: web::Data<GraphqlSchema>, req: GraphQLRequest) -> GraphQLResponse {
-  schema.execute(req.into_inner()).await.into()
+pub async fn graphql(
+  schema: web::Data<GraphqlSchema>,
+  http_req: HttpRequest,
+  req: GraphQLRequest,
+) -> GraphQLResponse {
+  let mut query = req.into_inner();
+
+  let maybe_claims = get_claims_from_req(http_req);
+  if let Some(claims) = maybe_claims {
+    if let Ok(claims) = claims {
+      query = query.data(claims);
+    }
+  }
+
+  schema.execute(query).await.into()
 }
 
 pub async fn graphql_playground() -> Result<HttpResponse> {

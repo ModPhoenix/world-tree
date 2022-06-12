@@ -2,9 +2,11 @@ import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { ReactElement } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import { useAuth } from 'hooks';
+import { Links } from 'settings';
 
 import { SignInForm, SignInFormValues } from '../SignInForm';
 
@@ -23,9 +25,12 @@ const AuthFormPaper = styled(Paper)`
 
 export function SignInPage(): ReactElement {
   const { signIn } = useAuth();
+  const navigate = useNavigate();
 
   async function onSubmit(data: SignInFormValues) {
     await signIn?.(data);
+
+    navigate(Links.index);
   }
 
   return (

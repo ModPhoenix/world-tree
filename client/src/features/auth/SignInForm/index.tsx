@@ -20,7 +20,11 @@ interface SignInFormProps {
 }
 
 export function SignInForm({ onSubmit }: SignInFormProps): ReactElement {
-  const { control, handleSubmit } = useForm<SignInFormValues>({
+  const {
+    control,
+    formState: { isSubmitting },
+    handleSubmit,
+  } = useForm<SignInFormValues>({
     defaultValues: { email: '', password: '' },
   });
 
@@ -56,7 +60,12 @@ export function SignInForm({ onSubmit }: SignInFormProps): ReactElement {
           )}
         />
       </FormRow>
-      <Button type="submit" variant="contained" fullWidth>
+      <Button
+        type="submit"
+        variant="contained"
+        fullWidth
+        disabled={isSubmitting}
+      >
         Sign In
       </Button>
     </SignInFormW>
