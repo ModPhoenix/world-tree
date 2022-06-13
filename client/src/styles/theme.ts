@@ -1,6 +1,8 @@
 import darkScrollbar from '@mui/material/darkScrollbar';
 import { createTheme } from '@mui/material/styles';
 
+import { LinkBehavior } from 'components';
+
 const baseTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -15,6 +17,16 @@ export const theme = createTheme(baseTheme, {
     MuiCssBaseline: {
       styleOverrides: {
         body: baseTheme.palette.mode === 'dark' ? darkScrollbar() : null,
+      },
+    },
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
+      },
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehavior,
       },
     },
   },

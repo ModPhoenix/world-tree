@@ -5,6 +5,7 @@ import { getLinksFromPaths } from 'utils';
  */
 export const Paths = {
   index: '/',
+  signUp: 'sign-up',
   signIn: 'sign-in',
 } as const;
 

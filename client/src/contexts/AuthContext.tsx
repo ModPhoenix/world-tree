@@ -1,16 +1,23 @@
 import { createContext, ReactElement, ReactNode, useState } from 'react';
 
-import { SignInMutationVariables, useSignInMutation } from 'api';
+import {
+  SignInMutationVariables,
+  SignUpMutationVariables,
+  useSignInMutation,
+  useSignUpMutation,
+} from 'api';
 import { getAccessToken, removeAccessToken, saveAccessToken } from 'utils';
 
 export interface AuthContextState {
   isAuthorized: boolean;
-  signIn: ((credentials: SignInMutationVariables) => Promise<void>) | null;
+  signUp: ((values: SignUpMutationVariables) => Promise<void>) | null;
+  signIn: ((values: SignInMutationVariables) => Promise<void>) | null;
   logout: (() => void) | null;
 }
 
 export const AuthContext = createContext<AuthContextState>({
   isAuthorized: false,
+  signUp: null,
   signIn: null,
   logout: null,
 });
@@ -27,12 +34,22 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
     getAccessToken(),
   );
 
-  const [signInMutation, { client }] = useSignInMutation();
+  const [signUpMutation, { client }] = useSignUpMutation();
+  const [signInMutation] = useSignInMutation();
 
   client.onResetStore(async () => setAccessToken(null));
 
-  async function signIn(credentials: SignInMutationVariables) {
-    const { data } = await signInMutation({ variables: credentials });
+  async function signUp(values: SignUpMutationVariables) {
+    const { data } = await signUpMutation({ variables: values });
+
+    if (data?.signUp) {
+      saveAccessToken(data.signUp);
+      setAccessToken(data.signUp);
+    }
+  }
+
+  async function signIn(values: SignInMutationVariables) {
+    const { data } = await signInMutation({ variables: values });
 
     if (data?.signIn) {
       saveAccessToken(data.signIn);
@@ -50,6 +67,7 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
     <AuthContext.Provider
       value={{
         isAuthorized: Boolean(accessToken),
+        signUp,
         signIn,
         logout,
       }}

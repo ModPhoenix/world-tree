@@ -2,7 +2,10 @@ use async_graphql::*;
 use chrono::Utc;
 
 use crate::{
-  models::{jwt::Claims, user::User},
+  models::{
+    jwt::{encode_jwt, Claims},
+    user::User,
+  },
   utils::get_db_pool,
 };
 
@@ -42,12 +45,15 @@ impl MutationRoot {
   ) -> Result<String> {
     let pool = get_db_pool(ctx);
 
-    let _ = sqlx::query!(
+    let id = uuid::Uuid::new_v4();
+
+    let _ = sqlx::query_as!(
+      User,
       r#"
         INSERT INTO users (id, email, username, password, created_at)
         VALUES ($1, $2, $3, $4, $5)
       "#,
-      uuid::Uuid::new_v4(),
+      id,
       email,
       username,
       password,
@@ -56,10 +62,21 @@ impl MutationRoot {
     .execute(pool)
     .await?;
 
-    Ok("sign up".to_string())
+    let user = sqlx::query_as!(User, "SELECT * FROM users WHERE id = $1", id)
+      .fetch_one(pool)
+      .await?;
+
+    println!("user {:?}", user);
+
+    Ok(encode_jwt(&user))
   }
 
-  async fn sign_in(&self, ctx: &Context<'_>, email: String, password: String) -> Result<String> {
+  async fn sign_in(
+    &self,
+    ctx: &Context<'_>,
+    #[graphql(validator(email))] email: String,
+    password: String,
+  ) -> Result<String> {
     let pool = get_db_pool(ctx);
 
     let error = Error::new("invalid email or password");
@@ -70,7 +87,7 @@ impl MutationRoot {
       .map_err(|_| error.clone())?;
 
     if user.password == password {
-      let token = crate::models::jwt::encode_jwt(&user);
+      let token = encode_jwt(&user);
       Ok(token)
     } else {
       Err(error)
