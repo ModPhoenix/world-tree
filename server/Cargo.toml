@@ -19,6 +19,9 @@ config = "0.13.1"
 chrono = { version = "0.4.19", features = ["serde"] }
 uuid = { version = "0.8.2", features = ["v4"] }
 jsonwebtoken = "8"
+derive_more = "0.99"
+thiserror = "1"
+strum = { version = "0.24.0", features = ["derive"] }
 
 [dev-dependencies]
 reqwest = { version = "0.11.10", features = ["blocking", "json"] }
