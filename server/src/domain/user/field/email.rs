@@ -20,6 +20,12 @@ impl Email {
   }
 }
 
+impl From<&Email> for String {
+  fn from(data: &Email) -> Self {
+    data.0.clone()
+  }
+}
+
 #[cfg(test)]
 mod test {
   use super::Email;

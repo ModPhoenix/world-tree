@@ -3,7 +3,7 @@ use chrono::{Duration, Local};
 use jsonwebtoken::{decode, encode, errors::Error, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 
-use super::user::User;
+use crate::domain::User;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
@@ -26,7 +26,7 @@ impl Claims {
 
     Claims {
       sub: id.to_string(),
-      email: email.clone(),
+      email: email.into(),
       iat: iat.timestamp(),
       exp: exp.timestamp(),
     }

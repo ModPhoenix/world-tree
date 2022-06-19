@@ -3,7 +3,7 @@ use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
 
 use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse};
 
-use crate::{models::jwt::get_claims_from_req, schema::GraphqlSchema};
+use crate::{schema::GraphqlSchema, service::jwt::get_claims_from_req};
 
 pub async fn health_check() -> HttpResponse {
   HttpResponse::Ok().finish()

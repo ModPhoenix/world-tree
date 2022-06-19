@@ -2,10 +2,8 @@ use async_graphql::*;
 use chrono::Utc;
 
 use crate::{
-  models::{
-    jwt::{encode_jwt, Claims},
-    user::User,
-  },
+  models::user::User,
+  service::jwt::{encode_jwt, Claims},
   utils::get_db_pool,
 };
 

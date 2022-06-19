@@ -1,6 +1,6 @@
 //! Database models and queries.
-pub mod model;
-pub mod query;
+pub mod models;
+pub mod queries;
 
 use sqlx::Postgres;
 
