@@ -9,11 +9,9 @@ use thiserror::Error;
 /// The possible errors that can occur when building a [`User`]
 #[derive(Debug, Error)]
 pub enum UserError {
-  /// Username has unwanted words/data.
   #[error("invalid username: {0}")]
   InvalidUsername(String),
 
-  /// Email has unwanted words/data.
   #[error("invalid email: {0}")]
   InvalidEmail(String),
 

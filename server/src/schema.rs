@@ -2,8 +2,11 @@ use async_graphql::*;
 use chrono::Utc;
 
 use crate::{
-  models::user::User,
-  service::jwt::{encode_jwt, Claims},
+  graphql::user::User,
+  service::{
+    jwt::{encode_jwt, Claims},
+    user::{get_user_by_email, get_user_by_id, get_users},
+  },
   utils::get_db_pool,
 };
 
@@ -14,17 +17,18 @@ pub struct QueryRoot;
 #[Object]
 impl QueryRoot {
   async fn users(&self, ctx: &Context<'_>) -> Result<Vec<User>> {
-    let claims = ctx
+    ctx
       .data::<Claims>()
       .map_err(|_| Error::new("Unauthorized"))?;
 
-    println!("claims: {:?}", claims);
-
     let pool = get_db_pool(ctx);
 
-    let users = sqlx::query_as!(User, r#"SELECT * FROM users"#)
-      .fetch_all(pool)
-      .await?;
+    let users = get_users(pool)
+      .await?
+      .into_iter()
+      .map(|user| user.try_into())
+      .flatten()
+      .collect();
 
     Ok(users)
   }
@@ -44,25 +48,25 @@ impl MutationRoot {
     let pool = get_db_pool(ctx);
 
     let id = uuid::Uuid::new_v4();
+    let created_at = Utc::now();
 
     let _ = sqlx::query_as!(
       User,
       r#"
-        INSERT INTO users (id, email, username, password, created_at)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO users (id, email, username, password, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6)
       "#,
       id,
       email,
       username,
       password,
-      Utc::now()
+      created_at,
+      created_at
     )
     .execute(pool)
     .await?;
 
-    let user = sqlx::query_as!(User, "SELECT * FROM users WHERE id = $1", id)
-      .fetch_one(pool)
-      .await?;
+    let user = get_user_by_id(id.into(), pool).await?;
 
     println!("user {:?}", user);
 
@@ -79,14 +83,14 @@ impl MutationRoot {
 
     let error = Error::new("invalid email or password");
 
-    let user = sqlx::query_as!(User, "SELECT * FROM users WHERE email = $1", email)
-      .fetch_one(pool)
+    let user = get_user_by_email(&email, pool)
       .await
       .map_err(|_| error.clone())?;
 
-    if user.password == password {
-      let token = encode_jwt(&user);
-      Ok(token)
+    println!("user {:?}", user);
+
+    if user.password.clone().into_inner() == password {
+      Ok(encode_jwt(&user))
     } else {
       Err(error)
     }

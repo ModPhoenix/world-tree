@@ -3,16 +3,14 @@ pub mod user;
 
 use crate::{data::DataError, domain::user::UserError};
 
-/// The possible errors that can occur when working with the [`service layer`](crate::service).
 #[derive(Debug, thiserror::Error)]
 pub enum ServiceError {
-  /// A clip error.
-  #[error("clip error: {0}")]
-  Clip(#[from] UserError),
-  /// A database error.
+  #[error("user error: {0}")]
+  User(#[from] UserError),
+
   #[error("database error: {0}")]
   Data(DataError),
-  /// Data not found.
+
   #[error("not found")]
   NotFound,
 }
