@@ -1,5 +1,5 @@
 name: coverage
-
+ 
 on: [push]
 
 env:
@@ -8,7 +8,8 @@ env:
   SQLX_FEATURES: postgres
 
 defaults:
-  working-directory: server
+  run:
+    working-directory: server
 
 jobs:
   coverage:
@@ -53,6 +54,7 @@ jobs:
             --features=${{ env.SQLX_FEATURES_RUNTIME }},${{ env.SQLX_FEATURES }}
             --no-default-features
             --locked
+            --manifest-path server/Cargo.toml
       - name: Migrate database
         run: |
           sudo apt-get install libpq-dev -y
@@ -61,4 +63,4 @@ jobs:
       - name: Run cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
         with:
-          args: "--ignore-tests --avoid-cfg-tarpaulin"
+          args: "--ignore-tests --avoid-cfg-tarpaulin --manifest-path server/Cargo.toml"

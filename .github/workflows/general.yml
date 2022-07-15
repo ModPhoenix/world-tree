@@ -9,7 +9,8 @@ env:
   SQLX_FEATURES: postgres
 
 defaults:
-  working-directory: server
+  run:
+    working-directory: server
 
 jobs:
   test:
@@ -66,6 +67,7 @@ jobs:
             --features=${{ env.SQLX_FEATURES_RUNTIME }},${{ env.SQLX_FEATURES }}
             --no-default-features
             --locked
+            --manifest-path server/Cargo.toml
       - name: Migrate database
         run: |
           sudo apt-get install libpq-dev -y
@@ -77,7 +79,7 @@ jobs:
       - name: Run cargo test
         uses: actions-rs/cargo@v1
         with:
-          command: test
+          command: test --manifest-path server/Cargo.toml
 
   fmt:
     name: Rustfmt
@@ -92,7 +94,7 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: fmt
-          args: --all -- --check
+          args: --all -- --check --manifest-path server/Cargo.toml
 
   clippy:
     name: Clippy
@@ -137,6 +139,7 @@ jobs:
             --features=${{ env.SQLX_FEATURES_RUNTIME }},${{ env.SQLX_FEATURES }}
             --no-default-features
             --locked
+            --manifest-path server/Cargo.toml
       - name: Migrate database
         run: |
           sudo apt-get install libpq-dev -y
@@ -146,4 +149,4 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: -- -D warnings
+          args: -- -D warnings --manifest-path server/Cargo.toml
