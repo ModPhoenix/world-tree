@@ -1,0 +1,25 @@
+schema: 'http://localhost:8000/graphql'
+documents: './src/**/*.graphql'
+config:
+  strictScalars: true
+  scalars:
+    UUID: string
+    DateTime: string
+hooks:
+  afterAllFileWrite:
+    - eslint --fix
+generates:
+  src/types/types.codegen.ts:
+    plugins:
+      - 'typescript'
+  src/api/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .codegen.ts
+      baseTypesPath: ../types/types.codegen.ts
+    plugins:
+      - typescript-operations
+      - typescript-react-apollo
+  src/api/apollo-helpers.codegen.ts:
+    plugins:
+      - typescript-apollo-client-helpers

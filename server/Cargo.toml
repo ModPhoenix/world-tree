@@ -1,0 +1,30 @@
+[package]
+name = "world-tree"
+version = "0.1.0"
+authors = ["Bohdan Ivanchenko <ivanchenko.b@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4.1.0"
+actix-cors = "0.6"
+tokio = { version = "1.19.2", features = ["macros", "rt-multi-thread"] }
+async-graphql = { version = "4.0", features = ["uuid", "chrono"] }
+async-graphql-actix-web = "4.0"
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = "1.0.81"
+sqlx = { version = "0.6.0", default-features = false, features = [ "runtime-actix-rustls", "macros", "postgres", "uuid", "chrono", "migrate", "offline"] }
+config = "0.13.1"
+chrono = { version = "0.4.19", features = ["serde"] }
+uuid = { version = "1.1.2", features = ["v4"] }
+jsonwebtoken = "8"
+derive_more = "0.99"
+thiserror = "1"
+strum = { version = "0.24.1", features = ["derive"] }
+
+[dev-dependencies]
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+
+[profile.dev.package.sqlx-macros]
+opt-level = 3
