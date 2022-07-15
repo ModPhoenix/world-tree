@@ -4,7 +4,7 @@ use crate::{
   service::{
     self,
     jwt::{encode_jwt, Claims},
-    user::{create_user, get_user_by_email, get_users},
+    user::{create_user, get_user_by_email, get_user_by_id, get_users},
   },
   utils::get_db_pool,
 };
@@ -16,6 +16,20 @@ pub struct AuthQuery;
 
 #[Object]
 impl AuthQuery {
+  async fn me(&self, ctx: &Context<'_>) -> Result<User> {
+    let Claims { sub, .. } = ctx
+      .data::<Claims>()
+      .map_err(|_| Error::new("Unauthorized"))?;
+
+    let pool = get_db_pool(ctx)?;
+
+    let user = get_user_by_id(sub.as_str().try_into()?, &pool)
+      .await?
+      .try_into()?;
+
+    Ok(user)
+  }
+
   async fn users(&self, ctx: &Context<'_>) -> Result<Vec<User>> {
     ctx
       .data::<Claims>()

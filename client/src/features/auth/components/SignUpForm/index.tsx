@@ -1,12 +1,12 @@
+import { styled } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { ReactElement } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import styled from 'styled-components/macro';
 
-const SignUpFormW = styled.form``;
+const SignUpFormW = styled('form')``;
 
-const FormRow = styled.div`
+const FormRow = styled('div')`
   margin-bottom: 20px;
 `;
 

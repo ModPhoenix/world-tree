@@ -1,10 +1,10 @@
+import { styled } from '@mui/material';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
-import styled from 'styled-components/macro';
 
-const AuthPageLayoutW = styled.div`
+const AuthPageLayoutW = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -6,6 +6,16 @@ mutation SignIn($email: String!, $password: String!) {
   signIn(email: $email, password: $password)
 }
 
+query Me {
+  me {
+    id
+    email
+    username
+    createdAt
+    updatedAt
+  }
+}
+
 query Users {
   users {
     id
