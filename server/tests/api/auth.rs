@@ -1,3 +1,5 @@
+use graphgram::service::user::get_user_by_email;
+
 use crate::utils::{spawn_app, GraphQLRequest};
 
 #[tokio::test]
@@ -19,23 +21,18 @@ async fn sign_up_works() {
     .json(&request_body)
     .send()
     .await
-    .expect("Failed to execute query.");
+    .unwrap();
 
   // Assert
   assert!(response.status().is_success());
-  assert_eq!(
-    "{\"data\":{\"signUp\":\"sign up\"}}",
-    response.text().await.unwrap()
-  );
 
-  let saved = sqlx::query!("SELECT email, username, password FROM users")
-    .fetch_one(&app.db_pool)
+  let saved = get_user_by_email("johndoe@example.com", &app.db_pool)
     .await
-    .expect("Failed to fetch saved subscription.");
+    .unwrap();
 
-  assert_eq!(saved.email, "johndoe@example.com");
-  assert_eq!(saved.username, "ronin");
-  assert_eq!(saved.password, "password");
+  assert_eq!(saved.email.into_inner(), "johndoe@example.com");
+  assert_eq!(saved.username.into_inner(), "ronin");
+  assert_eq!(saved.password.into_inner(), "password");
 }
 
 #[tokio::test]
@@ -60,8 +57,4 @@ async fn sign_in_works() {
 
   // Assert
   assert!(response.status().is_success());
-  assert_eq!(
-    "{\"data\":{\"signIn\":\"sign in\"}}",
-    response.text().await.unwrap()
-  );
 }
