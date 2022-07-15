@@ -4,23 +4,25 @@ import {
   TypePolicies,
   TypePolicy,
 } from '@apollo/client/cache';
-export type MutationRootKeySpecifier = (
+export type MutationKeySpecifier = (
   | 'signIn'
   | 'signUp'
-  | MutationRootKeySpecifier
+  | MutationKeySpecifier
 )[];
-export type MutationRootFieldPolicy = {
+export type MutationFieldPolicy = {
   signIn?: FieldPolicy<any> | FieldReadFunction<any>;
   signUp?: FieldPolicy<any> | FieldReadFunction<any>;
 };
-export type QueryRootKeySpecifier = ('users' | QueryRootKeySpecifier)[];
-export type QueryRootFieldPolicy = {
+export type QueryKeySpecifier = ('me' | 'users' | QueryKeySpecifier)[];
+export type QueryFieldPolicy = {
+  me?: FieldPolicy<any> | FieldReadFunction<any>;
   users?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type UserKeySpecifier = (
   | 'createdAt'
   | 'email'
   | 'id'
+  | 'updatedAt'
   | 'username'
   | UserKeySpecifier
 )[];
@@ -28,22 +30,23 @@ export type UserFieldPolicy = {
   createdAt?: FieldPolicy<any> | FieldReadFunction<any>;
   email?: FieldPolicy<any> | FieldReadFunction<any>;
   id?: FieldPolicy<any> | FieldReadFunction<any>;
+  updatedAt?: FieldPolicy<any> | FieldReadFunction<any>;
   username?: FieldPolicy<any> | FieldReadFunction<any>;
 };
 export type StrictTypedTypePolicies = {
-  MutationRoot?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+  Mutation?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
     keyFields?:
       | false
-      | MutationRootKeySpecifier
-      | (() => undefined | MutationRootKeySpecifier);
-    fields?: MutationRootFieldPolicy;
+      | MutationKeySpecifier
+      | (() => undefined | MutationKeySpecifier);
+    fields?: MutationFieldPolicy;
   };
-  QueryRoot?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
+  Query?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
     keyFields?:
       | false
-      | QueryRootKeySpecifier
-      | (() => undefined | QueryRootKeySpecifier);
-    fields?: QueryRootFieldPolicy;
+      | QueryKeySpecifier
+      | (() => undefined | QueryKeySpecifier);
+    fields?: QueryFieldPolicy;
   };
   User?: Omit<TypePolicy, 'fields' | 'keyFields'> & {
     keyFields?: false | UserKeySpecifier | (() => undefined | UserKeySpecifier);

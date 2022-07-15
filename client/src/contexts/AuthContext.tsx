@@ -3,12 +3,15 @@ import { createContext, ReactElement, ReactNode, useState } from 'react';
 import {
   SignInMutationVariables,
   SignUpMutationVariables,
+  useMeQuery,
   useSignInMutation,
   useSignUpMutation,
 } from 'api';
+import { User } from 'types';
 import { getAccessToken, removeAccessToken, saveAccessToken } from 'utils';
 
 export interface AuthContextState {
+  user: User | null;
   isAuthorized: boolean;
   signUp: ((values: SignUpMutationVariables) => Promise<void>) | null;
   signIn: ((values: SignInMutationVariables) => Promise<void>) | null;
@@ -16,6 +19,7 @@ export interface AuthContextState {
 }
 
 export const AuthContext = createContext<AuthContextState>({
+  user: null,
   isAuthorized: false,
   signUp: null,
   signIn: null,
@@ -36,6 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
 
   const [signUpMutation, { client }] = useSignUpMutation();
   const [signInMutation] = useSignInMutation();
+  const { data } = useMeQuery();
 
   client.onResetStore(async () => setAccessToken(null));
 
@@ -66,6 +71,7 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
   return (
     <AuthContext.Provider
       value={{
+        user: data?.me ?? null,
         isAuthorized: Boolean(accessToken),
         signUp,
         signIn,
