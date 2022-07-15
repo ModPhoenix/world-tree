@@ -1,7 +1,7 @@
 use std::net::TcpListener;
 
-use graphgram::{configuration::get_configuration, startup::run};
 use sqlx::PgPool;
+use world_tree::{configuration::get_configuration, startup::run};
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

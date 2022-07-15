@@ -1,9 +1,9 @@
 use std::net::TcpListener;
 
-use graphgram::configuration::get_configuration;
 use serde::Serialize;
 use serde_json::Map;
 use sqlx::PgPool;
+use world_tree::configuration::get_configuration;
 
 pub struct TestApp {
   pub address: String,
@@ -22,7 +22,7 @@ pub async fn spawn_app() -> TestApp {
     .expect("Failed to connect to Postgres.");
 
   let server =
-    graphgram::startup::run(listener, connection_pool.clone()).expect("Failed to bind address");
+    world_tree::startup::run(listener, connection_pool.clone()).expect("Failed to bind address");
   let _ = tokio::spawn(server);
 
   TestApp {

@@ -8,6 +8,10 @@ env:
   SQLX_FEATURES_RUNTIME: native-tls
   SQLX_FEATURES: postgres
 
+defaults:
+  run:
+    working-directory: server
+
 jobs:
   test:
     name: Test

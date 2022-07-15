@@ -1,4 +1,4 @@
-use graphgram::service::user::get_user_by_email;
+use world_tree::service::user::get_user_by_email;
 
 use crate::utils::{spawn_app, GraphQLRequest};
 
