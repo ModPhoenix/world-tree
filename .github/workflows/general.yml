@@ -9,8 +9,7 @@ env:
   SQLX_FEATURES: postgres
 
 defaults:
-  run:
-    working-directory: server
+  working-directory: server
 
 jobs:
   test:
@@ -74,7 +73,7 @@ jobs:
           SKIP_DOCKER=true ./scripts/init_db.sh
       - name: Check sqlx-data.json is up-to-date
         run: |
-          cargo sqlx prepare --check -- --bin graphgram
+          cargo sqlx prepare --check -- --bin world-tree
       - name: Run cargo test
         uses: actions-rs/cargo@v1
         with:

@@ -8,8 +8,7 @@ env:
   SQLX_FEATURES: postgres
 
 defaults:
-  run:
-    working-directory: server
+  working-directory: server
 
 jobs:
   coverage:
