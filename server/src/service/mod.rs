@@ -8,7 +8,7 @@ pub enum ServiceError {
   #[error("user error: {0}")]
   User(#[from] UserError),
 
-  #[error("database error: {0}")]
+  #[error("{0}")]
   Data(DataError),
 
   #[error("not found")]
