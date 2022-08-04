@@ -17,10 +17,7 @@ module.exports = {
       },
     },
   },
-  env: {
-    'jest/globals': true,
-  },
-  plugins: ['jest', 'testing-library', 'import'],
+  plugins: ['testing-library', 'import'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:import/errors',
@@ -29,9 +26,6 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest/style',
-    'plugin:jest-dom/recommended',
     'plugin:testing-library/react',
     'plugin:prettier/recommended',
   ],
@@ -45,7 +39,6 @@ module.exports = {
     ], // forbids naming interfaces in lower case
     'react/jsx-uses-react': 'off', // off because New JSX Transform - https://uk.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#eslint
     'react/react-in-jsx-scope': 'off', // off because New JSX Transform
-    '@typescript-eslint/no-unused-vars': 'off', // off because typescript
     'import/order': [
       'error',
       {

@@ -25,7 +25,7 @@ pub fn run(listener: TcpListener, db_pool: PgPool) -> Result<Server, std::io::Er
       .app_data(Data::new(schema.clone()))
       .wrap(
         Cors::default()
-          .allowed_origin("http://localhost:3000")
+          .allowed_origin("http://localhost:5173")
           .allowed_origin("http://localhost:8000")
           .allowed_methods(vec!["GET", "POST"])
           .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])

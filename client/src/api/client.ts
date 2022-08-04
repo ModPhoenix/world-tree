@@ -8,7 +8,9 @@ import { onError } from '@apollo/client/link/error';
 
 import { getAccessToken, removeAccessToken } from 'utils';
 
-const httpLink = new HttpLink({ uri: 'http://localhost:8000/graphql' });
+const uri = import.meta.env.VITE_API_URL;
+
+const httpLink = new HttpLink({ uri });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   const token = getAccessToken();
