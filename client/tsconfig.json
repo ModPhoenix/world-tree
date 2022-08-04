@@ -19,5 +19,6 @@
     "baseUrl": "src"
   },
   "include": ["src", "src/vite-env.d.ts"],
+  "types": ["vitest/globals"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
