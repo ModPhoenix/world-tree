@@ -1,10 +1,16 @@
+import { MemoryRouter } from 'react-router-dom';
+
 import { render, screen } from 'test';
 
 import { MainLayout } from '.';
 
 describe('<MainLayout />', () => {
   it('contains important content', () => {
-    render(<MainLayout />);
+    render(
+      <MemoryRouter>
+        <MainLayout />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByRole('banner')).toBeInTheDocument();
     expect(
@@ -26,7 +32,11 @@ describe('<MainLayout />', () => {
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
   it('render children', () => {
-    render(<MainLayout>Hello World</MainLayout>);
+    render(
+      <MemoryRouter>
+        <MainLayout>Hello World</MainLayout>
+      </MemoryRouter>,
+    );
 
     expect(screen.getByText('Hello World')).toBeInTheDocument();
   });

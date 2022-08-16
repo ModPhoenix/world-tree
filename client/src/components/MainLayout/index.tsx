@@ -1,9 +1,15 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { IconButton, Link } from '@mui/material';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import { Grid, IconButton, Link, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
-import { generatePath, Outlet } from 'react-router-dom';
+import { generatePath, Outlet, Link as RouterLink } from 'react-router-dom';
 
 import { ReactComponent as Logo } from 'assets/logo.svg';
+import { useRouteMatch } from 'hooks';
 import { Links } from 'settings';
 
 interface MainLayoutProps {
@@ -11,42 +17,94 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const routeMatch = useRouteMatch([
+    Links.index,
+    Links.explore,
+    Links.education,
+    Links.people,
+    Links.profile,
+  ]);
+  const currentTab = routeMatch?.pattern?.path;
+
   return (
-    <div>
-      <header>
-        <h1>
-          <Link href={Links.index} aria-label="World Tree">
-            <Logo />
-          </Link>
-        </h1>
-        <nav>
-          <Link href={Links.index} aria-label="Home">
-            Home
-          </Link>
-          <Link href={Links.explore} aria-label="Search and Explore">
-            Search and Explore
-          </Link>
-          <Link href={Links.education} aria-label="Education">
-            Education
-          </Link>
-          <Link href={Links.people} aria-label="People">
-            People
-          </Link>
-          <Link
-            href={generatePath(Links.profile, { username: 'leonhardeuler' })}
-            aria-label="Profile"
+    <Grid container minHeight="100vh">
+      <Grid item component="header">
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          justifyContent="space-between"
+          height="100vh"
+          pb={4}
+        >
+          <h1>
+            <Link href={Links.index} aria-label="World Tree">
+              <Logo />
+            </Link>
+          </h1>
+
+          <Tabs
+            value={currentTab}
+            orientation="vertical"
+            component="nav"
+            TabIndicatorProps={{ sx: { display: 'none' } }}
           >
-            Profile
-          </Link>
+            <Tab
+              role="link"
+              aria-label="Home"
+              value={Links.index}
+              to={Links.index}
+              disableRipple
+              component={RouterLink}
+              icon={<HomeOutlinedIcon />}
+            />
+            <Tab
+              role="link"
+              aria-label="Search and Explore"
+              value={Links.explore}
+              to={Links.explore}
+              disableRipple
+              component={RouterLink}
+              icon={<AccountTreeOutlinedIcon />}
+            />
+            <Tab
+              role="link"
+              aria-label="Education"
+              value={Links.education}
+              to={Links.education}
+              disableRipple
+              component={RouterLink}
+              icon={<SchoolOutlinedIcon />}
+            />
+            <Tab
+              role="link"
+              aria-label="People"
+              value={Links.people}
+              to={Links.people}
+              disableRipple
+              component={RouterLink}
+              icon={<PeopleOutlineOutlinedIcon />}
+            />
+            <Tab
+              role="link"
+              aria-label="Profile"
+              value={Links.profile}
+              disableRipple
+              to={generatePath(Links.profile, { username: 'leonhardeuler' })}
+              component={RouterLink}
+              icon={<PersonOutlinedIcon />}
+            />
+          </Tabs>
+
           <IconButton aria-label="Account Menu">
             <AccountCircleIcon />
           </IconButton>
-        </nav>
-      </header>
-      <main>
+        </Grid>
+      </Grid>
+      <Grid item component="main">
         <Outlet />
         {children}
-      </main>
-    </div>
+      </Grid>
+    </Grid>
   );
 }
