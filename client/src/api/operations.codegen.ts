@@ -9,27 +9,35 @@ export type SignUpMutationVariables = Types.Exact<{
   password: Types.Scalars['String'];
 }>;
 
-export type SignUpMutation = { __typename?: 'Mutation'; signUp: string };
+export type SignUpMutation = {
+  __typename?: 'Mutation';
+  signUp?: string | null;
+};
 
 export type SignInMutationVariables = Types.Exact<{
   email: Types.Scalars['String'];
   password: Types.Scalars['String'];
 }>;
 
-export type SignInMutation = { __typename?: 'Mutation'; signIn: string };
+export type SignInMutation = {
+  __typename?: 'Mutation';
+  signIn?: string | null;
+};
 
-export type MeQueryVariables = Types.Exact<{ [key: string]: never }>;
+export type UserQueryVariables = Types.Exact<{
+  id?: Types.InputMaybe<Types.Scalars['ID']>;
+}>;
 
-export type MeQuery = {
+export type UserQuery = {
   __typename?: 'Query';
-  me: {
+  users: Array<{
     __typename?: 'User';
     id: string;
     email: string;
     username: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+    createdAt?: string | null;
+    updatedAt?: string | null;
+  }>;
 };
 
 export type UsersQueryVariables = Types.Exact<{ [key: string]: never }>;
@@ -41,7 +49,8 @@ export type UsersQuery = {
     id: string;
     email: string;
     username: string;
-    createdAt: string;
+    createdAt?: string | null;
+    updatedAt?: string | null;
   }>;
 };
 
@@ -138,9 +147,9 @@ export type SignInMutationOptions = Apollo.BaseMutationOptions<
   SignInMutation,
   SignInMutationVariables
 >;
-export const MeDocument = gql`
-  query Me {
-    me {
+export const UserDocument = gql`
+  query User($id: ID) {
+    users(where: { id: $id }) {
       id
       email
       username
@@ -151,35 +160,39 @@ export const MeDocument = gql`
 `;
 
 /**
- * __useMeQuery__
+ * __useUserQuery__
  *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMeQuery({
+ * const { data, loading, error } = useUserQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
-export function useMeQuery(
-  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>,
+export function useUserQuery(
+  baseOptions?: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
 }
-export function useMeLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>,
+export function useUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(
+    UserDocument,
+    options,
+  );
 }
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UsersDocument = gql`
   query Users {
     users {
@@ -187,6 +200,7 @@ export const UsersDocument = gql`
       email
       username
       createdAt
+      updatedAt
     }
   }
 `;

@@ -3,7 +3,7 @@ import { createContext, ReactElement, ReactNode, useState } from 'react';
 import {
   SignInMutationVariables,
   SignUpMutationVariables,
-  useMeQuery,
+  useUserQuery,
   useSignInMutation,
   useSignUpMutation,
 } from 'api';
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
 
   const [signUpMutation, { client }] = useSignUpMutation();
   const [signInMutation] = useSignInMutation();
-  const { data } = useMeQuery();
+  const { data } = useUserQuery();
 
   client.onResetStore(async () => setAccessToken(null));
 
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
   return (
     <AuthContext.Provider
       value={{
-        user: data?.me ?? null,
+        user: data?.users[0] ?? null,
         isAuthorized: Boolean(accessToken),
         signUp,
         signIn,
