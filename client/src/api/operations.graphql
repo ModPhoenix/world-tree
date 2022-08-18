@@ -6,8 +6,8 @@ mutation SignIn($email: String!, $password: String!) {
   signIn(email: $email, password: $password)
 }
 
-query Me {
-  me {
+query User($id: ID) {
+  users(where: { id: $id }) {
     id
     email
     username
@@ -22,5 +22,6 @@ query Users {
     email
     username
     createdAt
+    updatedAt
   }
 }
