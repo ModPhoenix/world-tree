@@ -27,7 +27,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   const currentTab = routeMatch?.pattern?.path;
 
   return (
-    <Grid container minHeight="100vh">
+    <Grid container wrap="nowrap" minHeight="100vh">
       <Grid item component="header">
         <Grid
           container
@@ -119,9 +119,18 @@ export function MainLayout({ children }: MainLayoutProps) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item component="main">
-        <Outlet />
-        {children}
+      <Grid item container>
+        <Grid item component="main" sm={9}>
+          <Outlet />
+          {children}
+        </Grid>
+        <Grid
+          item
+          sm={3}
+          sx={(theme) => ({
+            borderLeft: `1px solid ${theme.palette.divider}`,
+          })}
+        ></Grid>
       </Grid>
     </Grid>
   );
