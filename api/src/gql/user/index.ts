@@ -5,8 +5,8 @@ import { comparePassword, createJWT, hashPassword } from "../../utils";
 export const userTypeDefs = gql`
   type User {
     id: ID! @id
-    email: String!
-    username: String!
+    email: String! @unique
+    username: String! @unique
     password: String! @private
     createdAt: DateTime! @timestamp(operations: [CREATE])
     updatedAt: DateTime! @timestamp(operations: [CREATE, UPDATE])
@@ -45,8 +45,6 @@ interface SignUpInput {
 }
 
 async function signUp(_root: any, args: SignUpInput, context: Context) {
-  console.log("context", context);
-
   const User = context.ogm.model("User");
 
   const [existing] = await User.find({
@@ -83,11 +81,7 @@ interface SignInInput {
 }
 
 async function signIn(_root: any, args: SignInInput, context: Context) {
-  console.log("signIn", args);
-
   const User = context.ogm.model("User");
-
-  console.log("User", User);
 
   const [existing] = await User.find({
     where: { email: args.email },
@@ -106,8 +100,6 @@ async function signIn(_root: any, args: SignInInput, context: Context) {
   }
 
   const jwt = await createJWT({ sub: existing.id });
-
-  console.log("jwt", jwt);
 
   return jwt;
 }
