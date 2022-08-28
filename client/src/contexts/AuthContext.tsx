@@ -8,7 +8,12 @@ import {
   useSignUpMutation,
 } from 'api';
 import { User } from 'types';
-import { getAccessToken, removeAccessToken, saveAccessToken } from 'utils';
+import {
+  getAccessToken,
+  getClaims,
+  removeAccessToken,
+  saveAccessToken,
+} from 'utils';
 
 export interface AuthContextState {
   user: User | null;
@@ -40,7 +45,14 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
 
   const [signUpMutation, { client }] = useSignUpMutation();
   const [signInMutation] = useSignInMutation();
-  const { data } = useUsersQuery();
+  const { data } = useUsersQuery({
+    skip: !accessToken,
+    variables: {
+      where: {
+        id: getClaims(accessToken)?.sub,
+      },
+    },
+  });
 
   client.onResetStore(async () => setAccessToken(null));
 

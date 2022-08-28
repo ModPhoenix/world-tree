@@ -1,16 +1,17 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
-import { Box, Grid, IconButton, Link, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Link, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
 import { generatePath, Outlet, Link as RouterLink } from 'react-router-dom';
 
 import { ReactComponent as Logo } from 'assets/logo.svg';
 import { useRouteMatch } from 'hooks';
 import { Links } from 'settings';
+
+import { AccountMenu } from '../AccountMenu';
 
 interface MainLayoutProps {
   children?: ReactNode;
@@ -113,9 +114,7 @@ export function MainLayout({ children }: MainLayoutProps) {
             alignItems="center"
             height="84px"
           >
-            <IconButton aria-label="Account Menu">
-              <AccountCircleIcon />
-            </IconButton>
+            <AccountMenu />
           </Grid>
         </Grid>
       </Grid>
