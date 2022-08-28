@@ -4,3 +4,4 @@ export * from './explore';
 export * from './education';
 export * from './people';
 export * from './profile';
+export * from './graph';

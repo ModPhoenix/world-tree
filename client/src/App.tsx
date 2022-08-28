@@ -10,6 +10,7 @@ import {
   ProfilePage,
   SignInPage,
   SignUpPage,
+  AddNodePage,
 } from 'features';
 import { Paths } from 'settings';
 
@@ -22,6 +23,10 @@ export function App(): ReactElement | null {
         { path: Paths.index, element: <HomePage /> },
         { path: Paths.signUp, element: <SignUpPage /> },
         { path: Paths.signIn, element: <SignInPage /> },
+        {
+          path: Paths.compose.index,
+          children: [{ path: Paths.compose.node, element: <AddNodePage /> }],
+        },
         { path: Paths.explore, element: <ExplorePage /> },
         { path: Paths.education, element: <EducationPage /> },
         { path: Paths.people, element: <PeoplePage /> },

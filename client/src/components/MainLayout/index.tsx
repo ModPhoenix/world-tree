@@ -1,9 +1,10 @@
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
-import { Box, Grid, Link, Tab, Tabs } from '@mui/material';
+import { Box, Grid, IconButton, Link, Tab, Tabs, Tooltip } from '@mui/material';
 import { ReactNode } from 'react';
 import { generatePath, Outlet, Link as RouterLink } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ export function MainLayout({ children }: MainLayoutProps) {
     Links.people,
     Links.profile,
   ]);
+
   const currentTab = routeMatch?.pattern?.path;
 
   return (
@@ -54,58 +56,76 @@ export function MainLayout({ children }: MainLayoutProps) {
             </Box>
           </Grid>
 
-          <Tabs
-            value={currentTab}
-            orientation="vertical"
-            component="nav"
-            TabIndicatorProps={{ sx: { display: 'none' } }}
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
           >
-            <Tab
-              role="link"
-              aria-label="Home"
-              value={Links.index}
-              to={Links.index}
-              disableRipple
-              component={RouterLink}
-              icon={<HomeOutlinedIcon />}
-            />
-            <Tab
-              role="link"
-              aria-label="Search and Explore"
-              value={Links.explore}
-              to={Links.explore}
-              disableRipple
-              component={RouterLink}
-              icon={<AccountTreeOutlinedIcon />}
-            />
-            <Tab
-              role="link"
-              aria-label="Education"
-              value={Links.education}
-              to={Links.education}
-              disableRipple
-              component={RouterLink}
-              icon={<SchoolOutlinedIcon />}
-            />
-            <Tab
-              role="link"
-              aria-label="People"
-              value={Links.people}
-              to={Links.people}
-              disableRipple
-              component={RouterLink}
-              icon={<PeopleOutlineOutlinedIcon />}
-            />
-            <Tab
-              role="link"
-              aria-label="Profile"
-              value={Links.profile}
-              disableRipple
-              to={generatePath(Links.profile, { username: 'leonhardeuler' })}
-              component={RouterLink}
-              icon={<PersonOutlinedIcon />}
-            />
-          </Tabs>
+            <Tabs
+              value={currentTab ?? Links.index}
+              orientation="vertical"
+              component="nav"
+              TabIndicatorProps={{ sx: { display: 'none' } }}
+            >
+              <Tab
+                role="link"
+                aria-label="Home"
+                value={Links.index}
+                to={Links.index}
+                disableRipple
+                component={RouterLink}
+                icon={<HomeOutlinedIcon />}
+              />
+              <Tab
+                role="link"
+                aria-label="Search and Explore"
+                value={Links.explore}
+                to={Links.explore}
+                disableRipple
+                component={RouterLink}
+                icon={<AccountTreeOutlinedIcon />}
+              />
+              <Tab
+                role="link"
+                aria-label="Education"
+                value={Links.education}
+                to={Links.education}
+                disableRipple
+                component={RouterLink}
+                icon={<SchoolOutlinedIcon />}
+              />
+              <Tab
+                role="link"
+                aria-label="People"
+                value={Links.people}
+                to={Links.people}
+                disableRipple
+                component={RouterLink}
+                icon={<PeopleOutlineOutlinedIcon />}
+              />
+              <Tab
+                role="link"
+                aria-label="Profile"
+                value={Links.profile}
+                disableRipple
+                to={generatePath(Links.profile, { username: 'leonhardeuler' })}
+                component={RouterLink}
+                icon={<PersonOutlinedIcon />}
+              />
+            </Tabs>
+
+            <Tooltip title="Add Node">
+              <IconButton
+                aria-label="Add Node"
+                href={Links.compose.node}
+                sx={{ mt: 2 }}
+                color="primary"
+              >
+                <AddRoundedIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Grid>
 
           <Grid
             item

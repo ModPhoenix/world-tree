@@ -7,6 +7,10 @@ export const Paths = {
   index: '/',
   signUp: 'sign-up',
   signIn: 'sign-in',
+  compose: {
+    index: 'compose',
+    node: 'node',
+  },
   explore: 'explore',
   education: 'education',
   people: 'people',

@@ -27,6 +27,7 @@ describe('<MainLayout />', () => {
     expect(screen.getByRole('link', { name: /people/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /profile/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /sign in/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /add node/i })).toBeInTheDocument();
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
   it('render children', () => {
