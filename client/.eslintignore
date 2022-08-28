@@ -3,4 +3,4 @@ build
 coverage
 
 # ignoge all generated files
-*.generated.ts
+*.codegen.ts
