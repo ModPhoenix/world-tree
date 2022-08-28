@@ -1,4 +1,6 @@
+import { useSnackbar } from 'notistack';
 import { createContext, ReactElement, ReactNode, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   SignInMutationVariables,
@@ -7,6 +9,7 @@ import {
   useSignInMutation,
   useSignUpMutation,
 } from 'api';
+import { Links } from 'settings';
 import { User } from 'types';
 import {
   getAccessToken,
@@ -39,6 +42,9 @@ interface AuthProviderProps {
  * Authorizing the user in the system
  */
 export function AuthProvider({ children }: AuthProviderProps): ReactElement {
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   const [accessToken, setAccessToken] = useState<string | null>(() =>
     getAccessToken(),
   );
@@ -57,21 +63,45 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
   client.onResetStore(async () => setAccessToken(null));
 
   async function signUp(values: SignUpMutationVariables) {
-    const { data } = await signUpMutation({ variables: values });
-
-    if (data?.signUp) {
-      saveAccessToken(data.signUp);
-      setAccessToken(data.signUp);
-    }
+    await signUpMutation({
+      variables: values,
+      onCompleted: (data) => {
+        if (data?.signUp) {
+          saveAccessToken(data.signUp);
+          setAccessToken(data.signUp);
+          enqueueSnackbar('Account created successfully', {
+            variant: 'success',
+          });
+          navigate(Links.index);
+        }
+      },
+      onError: (error) => {
+        enqueueSnackbar(error.message, {
+          variant: 'error',
+        });
+      },
+    });
   }
 
   async function signIn(values: SignInMutationVariables) {
-    const { data } = await signInMutation({ variables: values });
-
-    if (data?.signIn) {
-      saveAccessToken(data.signIn);
-      setAccessToken(data.signIn);
-    }
+    await signInMutation({
+      variables: values,
+      onCompleted: (data) => {
+        if (data?.signIn) {
+          saveAccessToken(data.signIn);
+          setAccessToken(data.signIn);
+          enqueueSnackbar('You have successfully signed in', {
+            variant: 'success',
+          });
+          navigate(Links.index);
+        }
+      },
+      onError: (error) => {
+        enqueueSnackbar(error.message, {
+          variant: 'error',
+        });
+      },
+    });
   }
 
   async function logout() {

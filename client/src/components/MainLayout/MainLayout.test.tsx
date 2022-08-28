@@ -26,9 +26,7 @@ describe('<MainLayout />', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /people/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /profile/i })).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /account menu/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /sign in/i })).toBeInTheDocument();
     expect(screen.getByRole('main')).toBeInTheDocument();
   });
   it('render children', () => {

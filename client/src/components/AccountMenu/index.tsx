@@ -47,8 +47,8 @@ export function AccountMenu() {
       ) : (
         <Tooltip title="Sign in">
           <IconButton href={Links.signIn}>
-            <Avatar>
-              <LoginIcon />
+            <Avatar sx={{ width: 32, height: 32 }}>
+              <LoginIcon fontSize="small" />
             </Avatar>
           </IconButton>
         </Tooltip>
