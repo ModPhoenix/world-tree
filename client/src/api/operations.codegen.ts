@@ -24,23 +24,10 @@ export type SignInMutation = {
   signIn?: string | null;
 };
 
-export type UserQueryVariables = Types.Exact<{
-  id?: Types.InputMaybe<Types.Scalars['ID']>;
+export type UsersQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.UserWhere>;
+  options?: Types.InputMaybe<Types.UserOptions>;
 }>;
-
-export type UserQuery = {
-  __typename?: 'Query';
-  users: Array<{
-    __typename?: 'User';
-    id: string;
-    email: string;
-    username: string;
-    createdAt?: string | null;
-    updatedAt?: string | null;
-  }>;
-};
-
-export type UsersQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type UsersQuery = {
   __typename?: 'Query';
@@ -49,6 +36,23 @@ export type UsersQuery = {
     id: string;
     email: string;
     username: string;
+    createdAt: string;
+    updatedAt: string;
+  }>;
+};
+
+export type KnowledgesQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.KnowledgeWhere>;
+  options?: Types.InputMaybe<Types.KnowledgeOptions>;
+}>;
+
+export type KnowledgesQuery = {
+  __typename?: 'Query';
+  knowledges: Array<{
+    __typename?: 'Knowledge';
+    id: string;
+    name: string;
+    content: string;
     createdAt?: string | null;
     updatedAt?: string | null;
   }>;
@@ -147,55 +151,9 @@ export type SignInMutationOptions = Apollo.BaseMutationOptions<
   SignInMutation,
   SignInMutationVariables
 >;
-export const UserDocument = gql`
-  query User($id: ID) {
-    users(where: { id: $id }) {
-      id
-      email
-      username
-      createdAt
-      updatedAt
-    }
-  }
-`;
-
-/**
- * __useUserQuery__
- *
- * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUserQuery(
-  baseOptions?: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-}
-export function useUserLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(
-    UserDocument,
-    options,
-  );
-}
-export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
-export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
-export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UsersDocument = gql`
-  query Users {
-    users {
+  query Users($where: UserWhere, $options: UserOptions) {
+    users(where: $where, options: $options) {
       id
       email
       username
@@ -217,6 +175,8 @@ export const UsersDocument = gql`
  * @example
  * const { data, loading, error } = useUsersQuery({
  *   variables: {
+ *      where: // value for 'where'
+ *      options: // value for 'options'
  *   },
  * });
  */
@@ -243,4 +203,65 @@ export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<
   UsersQuery,
   UsersQueryVariables
+>;
+export const KnowledgesDocument = gql`
+  query Knowledges($where: KnowledgeWhere, $options: KnowledgeOptions) {
+    knowledges(where: $where, options: $options) {
+      id
+      name
+      content
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+/**
+ * __useKnowledgesQuery__
+ *
+ * To run a query within a React component, call `useKnowledgesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useKnowledgesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useKnowledgesQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *      options: // value for 'options'
+ *   },
+ * });
+ */
+export function useKnowledgesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    KnowledgesQuery,
+    KnowledgesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<KnowledgesQuery, KnowledgesQueryVariables>(
+    KnowledgesDocument,
+    options,
+  );
+}
+export function useKnowledgesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    KnowledgesQuery,
+    KnowledgesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<KnowledgesQuery, KnowledgesQueryVariables>(
+    KnowledgesDocument,
+    options,
+  );
+}
+export type KnowledgesQueryHookResult = ReturnType<typeof useKnowledgesQuery>;
+export type KnowledgesLazyQueryHookResult = ReturnType<
+  typeof useKnowledgesLazyQuery
+>;
+export type KnowledgesQueryResult = Apollo.QueryResult<
+  KnowledgesQuery,
+  KnowledgesQueryVariables
 >;

@@ -1,12 +1,16 @@
-import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material';
 import { ReactElement } from 'react';
+
+import { ListView } from 'components';
+
+const PageLayout = styled('div')`
+  padding: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(10)}`};
+`;
 
 export function HomePage(): ReactElement {
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>
-        Home Page
-      </Typography>
-    </div>
+    <PageLayout>
+      <ListView />
+    </PageLayout>
   );
 }

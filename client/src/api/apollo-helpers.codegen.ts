@@ -33,6 +33,15 @@ export type CreateUsersMutationResponseFieldPolicy = {
   info?: FieldPolicy<any> | FieldReadFunction<any>;
   users?: FieldPolicy<any> | FieldReadFunction<any>;
 };
+export type DateTimeAggregateSelectionNonNullableKeySpecifier = (
+  | 'max'
+  | 'min'
+  | DateTimeAggregateSelectionNonNullableKeySpecifier
+)[];
+export type DateTimeAggregateSelectionNonNullableFieldPolicy = {
+  max?: FieldPolicy<any> | FieldReadFunction<any>;
+  min?: FieldPolicy<any> | FieldReadFunction<any>;
+};
 export type DateTimeAggregateSelectionNullableKeySpecifier = (
   | 'max'
   | 'min'
@@ -379,6 +388,16 @@ export type StrictTypedTypePolicies = {
       | CreateUsersMutationResponseKeySpecifier
       | (() => undefined | CreateUsersMutationResponseKeySpecifier);
     fields?: CreateUsersMutationResponseFieldPolicy;
+  };
+  DateTimeAggregateSelectionNonNullable?: Omit<
+    TypePolicy,
+    'fields' | 'keyFields'
+  > & {
+    keyFields?:
+      | false
+      | DateTimeAggregateSelectionNonNullableKeySpecifier
+      | (() => undefined | DateTimeAggregateSelectionNonNullableKeySpecifier);
+    fields?: DateTimeAggregateSelectionNonNullableFieldPolicy;
   };
   DateTimeAggregateSelectionNullable?: Omit<
     TypePolicy,
