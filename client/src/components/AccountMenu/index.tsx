@@ -14,7 +14,7 @@ import { useAuth } from 'hooks';
 import { Links } from 'settings';
 
 export function AccountMenu() {
-  const { user, logout } = useAuth();
+  const { isAuthorized, user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -32,7 +32,7 @@ export function AccountMenu() {
 
   return (
     <>
-      {user ? (
+      {isAuthorized ? (
         <Tooltip title="Account">
           <IconButton
             onClick={handleOpen}
@@ -41,7 +41,7 @@ export function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>{user.username[0]}</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>{user?.username[0]}</Avatar>
           </IconButton>
         </Tooltip>
       ) : (
