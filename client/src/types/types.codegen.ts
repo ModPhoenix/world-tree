@@ -38,6 +38,12 @@ export type CreateUsersMutationResponse = {
   users: Array<User>;
 };
 
+export type DateTimeAggregateSelectionNonNullable = {
+  __typename?: 'DateTimeAggregateSelectionNonNullable';
+  max: Scalars['DateTime'];
+  min: Scalars['DateTime'];
+};
+
 export type DateTimeAggregateSelectionNullable = {
   __typename?: 'DateTimeAggregateSelectionNullable';
   max?: Maybe<Scalars['DateTime']>;
@@ -545,6 +551,7 @@ export type KnowledgeSort = {
 
 export type KnowledgeUniqueWhere = {
   id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type KnowledgeUpdateInput = {
@@ -780,20 +787,20 @@ export type UpdateUsersMutationResponse = {
 
 export type User = {
   __typename?: 'User';
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['ID'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
 };
 
 export type UserAggregateSelection = {
   __typename?: 'UserAggregateSelection';
   count: Scalars['Int'];
-  createdAt: DateTimeAggregateSelectionNullable;
+  createdAt: DateTimeAggregateSelectionNonNullable;
   email: StringAggregateSelectionNonNullable;
   id: IdAggregateSelectionNonNullable;
-  updatedAt: DateTimeAggregateSelectionNullable;
+  updatedAt: DateTimeAggregateSelectionNonNullable;
   username: StringAggregateSelectionNonNullable;
 };
 
@@ -835,11 +842,11 @@ export type UserWhere = {
   createdAt?: InputMaybe<Scalars['DateTime']>;
   createdAt_GT?: InputMaybe<Scalars['DateTime']>;
   createdAt_GTE?: InputMaybe<Scalars['DateTime']>;
-  createdAt_IN?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_IN?: InputMaybe<Array<Scalars['DateTime']>>;
   createdAt_LT?: InputMaybe<Scalars['DateTime']>;
   createdAt_LTE?: InputMaybe<Scalars['DateTime']>;
   createdAt_NOT?: InputMaybe<Scalars['DateTime']>;
-  createdAt_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  createdAt_NOT_IN?: InputMaybe<Array<Scalars['DateTime']>>;
   email?: InputMaybe<Scalars['String']>;
   email_CONTAINS?: InputMaybe<Scalars['String']>;
   email_ENDS_WITH?: InputMaybe<Scalars['String']>;
@@ -863,11 +870,11 @@ export type UserWhere = {
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   updatedAt_GT?: InputMaybe<Scalars['DateTime']>;
   updatedAt_GTE?: InputMaybe<Scalars['DateTime']>;
-  updatedAt_IN?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_IN?: InputMaybe<Array<Scalars['DateTime']>>;
   updatedAt_LT?: InputMaybe<Scalars['DateTime']>;
   updatedAt_LTE?: InputMaybe<Scalars['DateTime']>;
   updatedAt_NOT?: InputMaybe<Scalars['DateTime']>;
-  updatedAt_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
+  updatedAt_NOT_IN?: InputMaybe<Array<Scalars['DateTime']>>;
   username?: InputMaybe<Scalars['String']>;
   username_CONTAINS?: InputMaybe<Scalars['String']>;
   username_ENDS_WITH?: InputMaybe<Scalars['String']>;

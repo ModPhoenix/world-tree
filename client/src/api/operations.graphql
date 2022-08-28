@@ -6,8 +6,8 @@ mutation SignIn($email: String!, $password: String!) {
   signIn(email: $email, password: $password)
 }
 
-query User($id: ID) {
-  users(where: { id: $id }) {
+query Users($where: UserWhere, $options: UserOptions) {
+  users(where: $where, options: $options) {
     id
     email
     username
@@ -16,11 +16,11 @@ query User($id: ID) {
   }
 }
 
-query Users {
-  users {
+query Knowledges($where: KnowledgeWhere, $options: KnowledgeOptions) {
+  knowledges(where: $where, options: $options) {
     id
-    email
-    username
+    name
+    content
     createdAt
     updatedAt
   }
