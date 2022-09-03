@@ -2,6 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { useKnowledgeCreateMutation } from 'api';
+import { ROOT_NODE } from 'settings';
 
 import { NodeForm } from '../../components';
 
@@ -22,8 +23,6 @@ export function AddNodePage(): JSX.Element {
     refetchQueries: ['Knowledges'],
   });
 
-  const parentNode = 'Root';
-
   const onSubmit = async (values: AddNodeFormValues) => {
     await knowledgeCreateMutation({
       variables: {
@@ -33,7 +32,7 @@ export function AddNodePage(): JSX.Element {
               {
                 where: {
                   node: {
-                    name: parentNode,
+                    name: ROOT_NODE,
                   },
                 },
               },
@@ -52,7 +51,7 @@ export function AddNodePage(): JSX.Element {
         <Typography variant="h4" component="h1" align="center" gutterBottom>
           Add Node
         </Typography>
-        <NodeForm parentNode={parentNode} onSubmit={onSubmit} />
+        <NodeForm parentNode={ROOT_NODE} onSubmit={onSubmit} />
       </Grid>
     </Grid>
   );

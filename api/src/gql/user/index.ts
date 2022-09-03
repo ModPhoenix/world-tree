@@ -9,7 +9,7 @@ export const userTypeDefs = gql`
     username: String! @unique
     password: String! @private
     createdAt: DateTime! @timestamp(operations: [CREATE])
-    updatedAt: DateTime! @timestamp(operations: [CREATE, UPDATE])
+    updatedAt: DateTime! @timestamp
   }
 
   extend type User

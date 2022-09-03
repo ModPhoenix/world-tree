@@ -55,7 +55,7 @@ export function NodeForm({
         <LoadingButton
           type="submit"
           variant="contained"
-          loadingPosition="start"
+          loadingPosition="center"
           loading={isSubmitting}
         >
           Add Node

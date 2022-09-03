@@ -8,6 +8,6 @@ export const knowledgeTypeDefs = gql`
         children: [Knowledge!]! @relationship(type: "LINK", direction: OUT)
         parents: [Knowledge!]! @relationship(type: "LINK", direction: IN)
         createdAt: DateTime @timestamp(operations: [CREATE])
-        updatedAt: DateTime @timestamp(operations: [UPDATE])
+        updatedAt: DateTime @timestamp
     }
 `;

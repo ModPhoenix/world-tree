@@ -24,6 +24,7 @@ export async function getServer(): Promise<ApolloServer> {
   await ogm.init();
 
   const neoSchema = new Neo4jGraphQL({
+    driver,
     typeDefs,
     resolvers,
     plugins: {
@@ -33,8 +34,11 @@ export async function getServer(): Promise<ApolloServer> {
     },
   });
 
+  const schema = await neoSchema.getSchema();
+  await neoSchema.assertIndexesAndConstraints({ options: { create: true } });
+
   const server: ApolloServer = new ApolloServer({
-    schema: await neoSchema.getSchema(),
+    schema,
     context: ({ req }) => ({ ogm, driver, req } as Context),
   });
 
