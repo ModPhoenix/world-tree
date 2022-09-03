@@ -16,12 +16,42 @@ query Users($where: UserWhere, $options: UserOptions) {
   }
 }
 
-query Knowledges($where: KnowledgeWhere, $options: KnowledgeOptions) {
-  knowledges(where: $where, options: $options) {
+# Knowledge
+
+mutation KnowledgeCreate($input: [KnowledgeCreateInput!]!) {
+  createKnowledges(input: $input) {
+    info {
+      bookmark
+      nodesCreated
+      relationshipsCreated
+    }
+    knowledges {
+      parents {
+        id
+        name
+      }
+      id
+      name
+      content
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+query Knowledges($where: KnowledgeWhere) {
+  knowledges(where: $where) {
     id
     name
     content
     createdAt
     updatedAt
+    children {
+      id
+      name
+      content
+      createdAt
+      updatedAt
+    }
   }
 }

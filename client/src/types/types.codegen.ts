@@ -1,14 +1,8 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -78,16 +72,19 @@ export type Knowledge = {
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
+
 export type KnowledgeChildrenArgs = {
   directed?: InputMaybe<Scalars['Boolean']>;
   options?: InputMaybe<KnowledgeOptions>;
   where?: InputMaybe<KnowledgeWhere>;
 };
 
+
 export type KnowledgeChildrenAggregateArgs = {
   directed?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<KnowledgeWhere>;
 };
+
 
 export type KnowledgeChildrenConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -97,16 +94,19 @@ export type KnowledgeChildrenConnectionArgs = {
   where?: InputMaybe<KnowledgeChildrenConnectionWhere>;
 };
 
+
 export type KnowledgeParentsArgs = {
   directed?: InputMaybe<Scalars['Boolean']>;
   options?: InputMaybe<KnowledgeOptions>;
   where?: InputMaybe<KnowledgeWhere>;
 };
 
+
 export type KnowledgeParentsAggregateArgs = {
   directed?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<KnowledgeWhere>;
 };
+
 
 export type KnowledgeParentsConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -185,9 +185,7 @@ export type KnowledgeChildrenDisconnectFieldInput = {
 
 export type KnowledgeChildrenFieldInput = {
   connect?: InputMaybe<Array<KnowledgeChildrenConnectFieldInput>>;
-  connectOrCreate?: InputMaybe<
-    Array<KnowledgeChildrenConnectOrCreateFieldInput>
-  >;
+  connectOrCreate?: InputMaybe<Array<KnowledgeChildrenConnectOrCreateFieldInput>>;
   create?: InputMaybe<Array<KnowledgeChildrenCreateFieldInput>>;
 };
 
@@ -279,9 +277,7 @@ export type KnowledgeChildrenUpdateConnectionInput = {
 
 export type KnowledgeChildrenUpdateFieldInput = {
   connect?: InputMaybe<Array<KnowledgeChildrenConnectFieldInput>>;
-  connectOrCreate?: InputMaybe<
-    Array<KnowledgeChildrenConnectOrCreateFieldInput>
-  >;
+  connectOrCreate?: InputMaybe<Array<KnowledgeChildrenConnectOrCreateFieldInput>>;
   create?: InputMaybe<Array<KnowledgeChildrenCreateFieldInput>>;
   delete?: InputMaybe<Array<KnowledgeChildrenDeleteFieldInput>>;
   disconnect?: InputMaybe<Array<KnowledgeChildrenDisconnectFieldInput>>;
@@ -431,9 +427,7 @@ export type KnowledgeParentsDisconnectFieldInput = {
 
 export type KnowledgeParentsFieldInput = {
   connect?: InputMaybe<Array<KnowledgeParentsConnectFieldInput>>;
-  connectOrCreate?: InputMaybe<
-    Array<KnowledgeParentsConnectOrCreateFieldInput>
-  >;
+  connectOrCreate?: InputMaybe<Array<KnowledgeParentsConnectOrCreateFieldInput>>;
   create?: InputMaybe<Array<KnowledgeParentsCreateFieldInput>>;
 };
 
@@ -525,9 +519,7 @@ export type KnowledgeParentsUpdateConnectionInput = {
 
 export type KnowledgeParentsUpdateFieldInput = {
   connect?: InputMaybe<Array<KnowledgeParentsConnectFieldInput>>;
-  connectOrCreate?: InputMaybe<
-    Array<KnowledgeParentsConnectOrCreateFieldInput>
-  >;
+  connectOrCreate?: InputMaybe<Array<KnowledgeParentsConnectOrCreateFieldInput>>;
   create?: InputMaybe<Array<KnowledgeParentsCreateFieldInput>>;
   delete?: InputMaybe<Array<KnowledgeParentsDeleteFieldInput>>;
   disconnect?: InputMaybe<Array<KnowledgeParentsDisconnectFieldInput>>;
@@ -657,33 +649,40 @@ export type Mutation = {
   updateUsers: UpdateUsersMutationResponse;
 };
 
+
 export type MutationCreateKnowledgesArgs = {
   input: Array<KnowledgeCreateInput>;
 };
 
+
 export type MutationCreateUsersArgs = {
   input: Array<UserCreateInput>;
 };
+
 
 export type MutationDeleteKnowledgesArgs = {
   delete?: InputMaybe<KnowledgeDeleteInput>;
   where?: InputMaybe<KnowledgeWhere>;
 };
 
+
 export type MutationDeleteUsersArgs = {
   where?: InputMaybe<UserWhere>;
 };
+
 
 export type MutationSignInArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
 
+
 export type MutationSignUpArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
+
 
 export type MutationUpdateKnowledgesArgs = {
   connect?: InputMaybe<KnowledgeConnectInput>;
@@ -694,6 +693,7 @@ export type MutationUpdateKnowledgesArgs = {
   update?: InputMaybe<KnowledgeUpdateInput>;
   where?: InputMaybe<KnowledgeWhere>;
 };
+
 
 export type MutationUpdateUsersArgs = {
   update?: InputMaybe<UserUpdateInput>;
@@ -719,14 +719,17 @@ export type Query = {
   usersConnection: UsersConnection;
 };
 
+
 export type QueryKnowledgesArgs = {
   options?: InputMaybe<KnowledgeOptions>;
   where?: InputMaybe<KnowledgeWhere>;
 };
 
+
 export type QueryKnowledgesAggregateArgs = {
   where?: InputMaybe<KnowledgeWhere>;
 };
+
 
 export type QueryKnowledgesConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -735,14 +738,17 @@ export type QueryKnowledgesConnectionArgs = {
   where?: InputMaybe<KnowledgeWhere>;
 };
 
+
 export type QueryUsersArgs = {
   options?: InputMaybe<UserOptions>;
   where?: InputMaybe<UserWhere>;
 };
 
+
 export type QueryUsersAggregateArgs = {
   where?: InputMaybe<UserWhere>;
 };
+
 
 export type QueryUsersConnectionArgs = {
   after?: InputMaybe<Scalars['String']>;
@@ -755,7 +761,7 @@ export enum SortDirection {
   /** Sort by field values in ascending order. */
   Asc = 'ASC',
   /** Sort by field values in descending order. */
-  Desc = 'DESC',
+  Desc = 'DESC'
 }
 
 export type StringAggregateSelectionNonNullable = {
