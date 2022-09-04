@@ -26,7 +26,7 @@ fragment KnowledgeNode on Knowledge {
   updatedAt
 }
 
-mutation KnowledgeCreate($input: [KnowledgeCreateInput!]!) {
+mutation CreateKnowledge($input: [KnowledgeCreateInput!]!) {
   createKnowledges(input: $input) {
     info {
       bookmark
@@ -37,6 +37,24 @@ mutation KnowledgeCreate($input: [KnowledgeCreateInput!]!) {
       parents {
         ...KnowledgeNode
       }
+      ...KnowledgeNode
+    }
+  }
+}
+
+mutation UpdateKnowledges(
+  $where: KnowledgeWhere
+  $update: KnowledgeUpdateInput
+) {
+  updateKnowledges(where: $where, update: $update) {
+    info {
+      nodesCreated
+      nodesDeleted
+      relationshipsCreated
+      relationshipsDeleted
+      bookmark
+    }
+    knowledges {
       ...KnowledgeNode
     }
   }

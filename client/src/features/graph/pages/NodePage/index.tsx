@@ -18,14 +18,14 @@ function getBreadcrumbs(
   if (parent) {
     breadcrumbs.push({
       label: parent.name,
-      href: generatePath(Links.node.page, { name: parent.name }),
+      href: generatePath(Links.node.page.index, { name: parent.name }),
     });
   }
 
   if (node) {
     breadcrumbs.push({
       label: node.name,
-      href: generatePath(Links.node.page, { name: node.name }),
+      href: generatePath(Links.node.page.index, { name: node.name }),
     });
   }
 

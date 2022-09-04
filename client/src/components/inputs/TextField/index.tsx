@@ -7,10 +7,10 @@ import { isFieldErrorMessage } from '../utils';
 export { TextField };
 export type { TextFieldProps };
 
-type TextFieldControlProps<T = FieldValues> = UseControllerProps<T> &
+type TextFieldControlProps<T extends FieldValues> = UseControllerProps<T> &
   Omit<TextFieldProps, 'name' | 'defaultValue'>;
 
-export function TextFieldControl<T>({
+export function TextFieldControl<T extends FieldValues>({
   control,
   name,
   rules,

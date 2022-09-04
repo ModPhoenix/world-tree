@@ -30,12 +30,20 @@ export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Us
 
 export type KnowledgeNodeFragment = { __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null };
 
-export type KnowledgeCreateMutationVariables = Types.Exact<{
+export type CreateKnowledgeMutationVariables = Types.Exact<{
   input: Array<Types.KnowledgeCreateInput> | Types.KnowledgeCreateInput;
 }>;
 
 
-export type KnowledgeCreateMutation = { __typename?: 'Mutation', createKnowledges: { __typename?: 'CreateKnowledgesMutationResponse', info: { __typename?: 'CreateInfo', bookmark?: string | null, nodesCreated: number, relationshipsCreated: number }, knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> } };
+export type CreateKnowledgeMutation = { __typename?: 'Mutation', createKnowledges: { __typename?: 'CreateKnowledgesMutationResponse', info: { __typename?: 'CreateInfo', bookmark?: string | null, nodesCreated: number, relationshipsCreated: number }, knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> } };
+
+export type UpdateKnowledgesMutationVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.KnowledgeWhere>;
+  update?: Types.InputMaybe<Types.KnowledgeUpdateInput>;
+}>;
+
+
+export type UpdateKnowledgesMutation = { __typename?: 'Mutation', updateKnowledges: { __typename?: 'UpdateKnowledgesMutationResponse', info: { __typename?: 'UpdateInfo', nodesCreated: number, nodesDeleted: number, relationshipsCreated: number, relationshipsDeleted: number, bookmark?: string | null }, knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> } };
 
 export type KnowledgesQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.KnowledgeWhere>;
@@ -158,8 +166,8 @@ export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<User
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
-export const KnowledgeCreateDocument = gql`
-    mutation KnowledgeCreate($input: [KnowledgeCreateInput!]!) {
+export const CreateKnowledgeDocument = gql`
+    mutation CreateKnowledge($input: [KnowledgeCreateInput!]!) {
   createKnowledges(input: $input) {
     info {
       bookmark
@@ -175,32 +183,75 @@ export const KnowledgeCreateDocument = gql`
   }
 }
     ${KnowledgeNodeFragmentDoc}`;
-export type KnowledgeCreateMutationFn = Apollo.MutationFunction<KnowledgeCreateMutation, KnowledgeCreateMutationVariables>;
+export type CreateKnowledgeMutationFn = Apollo.MutationFunction<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>;
 
 /**
- * __useKnowledgeCreateMutation__
+ * __useCreateKnowledgeMutation__
  *
- * To run a mutation, you first call `useKnowledgeCreateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useKnowledgeCreateMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateKnowledgeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateKnowledgeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [knowledgeCreateMutation, { data, loading, error }] = useKnowledgeCreateMutation({
+ * const [createKnowledgeMutation, { data, loading, error }] = useCreateKnowledgeMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useKnowledgeCreateMutation(baseOptions?: Apollo.MutationHookOptions<KnowledgeCreateMutation, KnowledgeCreateMutationVariables>) {
+export function useCreateKnowledgeMutation(baseOptions?: Apollo.MutationHookOptions<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<KnowledgeCreateMutation, KnowledgeCreateMutationVariables>(KnowledgeCreateDocument, options);
+        return Apollo.useMutation<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>(CreateKnowledgeDocument, options);
       }
-export type KnowledgeCreateMutationHookResult = ReturnType<typeof useKnowledgeCreateMutation>;
-export type KnowledgeCreateMutationResult = Apollo.MutationResult<KnowledgeCreateMutation>;
-export type KnowledgeCreateMutationOptions = Apollo.BaseMutationOptions<KnowledgeCreateMutation, KnowledgeCreateMutationVariables>;
+export type CreateKnowledgeMutationHookResult = ReturnType<typeof useCreateKnowledgeMutation>;
+export type CreateKnowledgeMutationResult = Apollo.MutationResult<CreateKnowledgeMutation>;
+export type CreateKnowledgeMutationOptions = Apollo.BaseMutationOptions<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>;
+export const UpdateKnowledgesDocument = gql`
+    mutation UpdateKnowledges($where: KnowledgeWhere, $update: KnowledgeUpdateInput) {
+  updateKnowledges(where: $where, update: $update) {
+    info {
+      nodesCreated
+      nodesDeleted
+      relationshipsCreated
+      relationshipsDeleted
+      bookmark
+    }
+    knowledges {
+      ...KnowledgeNode
+    }
+  }
+}
+    ${KnowledgeNodeFragmentDoc}`;
+export type UpdateKnowledgesMutationFn = Apollo.MutationFunction<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>;
+
+/**
+ * __useUpdateKnowledgesMutation__
+ *
+ * To run a mutation, you first call `useUpdateKnowledgesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateKnowledgesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateKnowledgesMutation, { data, loading, error }] = useUpdateKnowledgesMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *      update: // value for 'update'
+ *   },
+ * });
+ */
+export function useUpdateKnowledgesMutation(baseOptions?: Apollo.MutationHookOptions<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>(UpdateKnowledgesDocument, options);
+      }
+export type UpdateKnowledgesMutationHookResult = ReturnType<typeof useUpdateKnowledgesMutation>;
+export type UpdateKnowledgesMutationResult = Apollo.MutationResult<UpdateKnowledgesMutation>;
+export type UpdateKnowledgesMutationOptions = Apollo.BaseMutationOptions<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>;
 export const KnowledgesDocument = gql`
     query Knowledges($where: KnowledgeWhere) {
   knowledges(where: $where) {

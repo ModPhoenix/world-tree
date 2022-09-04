@@ -1,11 +1,12 @@
 import { LoadingButton } from '@mui/lab';
 import { Alert } from '@mui/material';
 import { Stack } from '@mui/system';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { TextFieldControl } from 'components';
 
-interface NodeFormValues {
+export interface NodeFormValues {
   name: string;
   content: string;
 }
@@ -28,11 +29,16 @@ export function NodeForm({
 }: NodeFormProps): JSX.Element {
   const {
     control,
+    reset,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<NodeFormValues>({
     defaultValues,
   });
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

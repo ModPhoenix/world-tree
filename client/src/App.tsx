@@ -12,6 +12,7 @@ import {
   SignUpPage,
   AddNodePage,
   NodePage,
+  UpdateNodePage,
 } from 'features';
 import { Paths } from 'settings';
 
@@ -26,7 +27,15 @@ export function App(): ReactElement | null {
         { path: Paths.signIn, element: <SignInPage /> },
         {
           path: Paths.node.index,
-          children: [{ path: Paths.node.page, element: <NodePage /> }],
+          children: [
+            {
+              path: Paths.node.page.index,
+              children: [
+                { index: true, element: <NodePage /> },
+                { path: Paths.node.page.update, element: <UpdateNodePage /> },
+              ],
+            },
+          ],
         },
         {
           path: Paths.compose.index,

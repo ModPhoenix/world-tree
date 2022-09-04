@@ -9,7 +9,10 @@ export const Paths = {
   signIn: 'sign-in',
   node: {
     index: 'node',
-    page: ':name',
+    page: {
+      index: ':name',
+      update: 'update',
+    },
   },
   compose: {
     index: 'compose',

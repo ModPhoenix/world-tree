@@ -5,7 +5,13 @@ import { ListViewItem } from '.';
 describe('<ListViewItem />', () => {
   it('renders correctly', () => {
     const nodeName = 'Chaos';
-    render(<ListViewItem name={nodeName} content="Root node of World Tree" />);
+    render(
+      <ListViewItem
+        name={nodeName}
+        content="Root node of World Tree"
+        children={[]}
+      />,
+    );
 
     expect(screen.getByTestId('node')).toBeInTheDocument();
     expect(

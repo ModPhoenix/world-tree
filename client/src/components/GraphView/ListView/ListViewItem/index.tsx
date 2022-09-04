@@ -13,7 +13,7 @@ interface ListViewItemProps {
 export function ListViewItem({ name, content, children }: ListViewItemProps) {
   return (
     <article aria-labelledby="node-name" data-testid="node">
-      <Link href={generatePath(Links.node.page, { name })}>
+      <Link href={generatePath(Links.node.page.index, { name })}>
         <Typography id="node-name" variant="h5" component="h2">
           {name}
         </Typography>
@@ -27,7 +27,7 @@ export function ListViewItem({ name, content, children }: ListViewItemProps) {
             key={child.id}
             label={child.name}
             component={Link}
-            href={generatePath(Links.node.page, { name: child.name })}
+            href={generatePath(Links.node.page.index, { name: child.name })}
           />
         ))}
       </Stack>

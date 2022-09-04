@@ -1,22 +1,27 @@
 import { Grid, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { generatePath, useNavigate, useSearchParams } from 'react-router-dom';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
-import { useCreateKnowledgeMutation } from 'api';
-import { CREATE_NODE_PARENT_SEARCH_PARAM, Links, ROOT_NODE } from 'settings';
+import { useUpdateKnowledgesMutation, useKnowledgesQuery } from 'api';
+import { Links } from 'settings';
 
 import { NodeForm, NodeFormValues } from '../../components';
 
-export function AddNodePage(): JSX.Element {
+export function UpdateNodePage(): JSX.Element {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const [searchParams] = useSearchParams();
-  const parentName =
-    searchParams.get(CREATE_NODE_PARENT_SEARCH_PARAM) || ROOT_NODE;
+  const { name } = useParams();
+  const { data } = useKnowledgesQuery({
+    variables: {
+      where: { name },
+    },
+  });
 
-  const [knowledgeCreateMutation] = useCreateKnowledgeMutation({
+  const [node] = data?.knowledges ?? [];
+
+  const [updateKnowledgesMutation] = useUpdateKnowledgesMutation({
     onCompleted(data) {
-      const [node] = data.createKnowledges.knowledges;
+      const [node] = data.updateKnowledges.knowledges;
 
       if (node) {
         enqueueSnackbar('Node created', { variant: 'success' });
@@ -34,20 +39,12 @@ export function AddNodePage(): JSX.Element {
   });
 
   const onSubmit = async (values: NodeFormValues) => {
-    await knowledgeCreateMutation({
+    await updateKnowledgesMutation({
       variables: {
-        input: {
-          parents: {
-            connect: [
-              {
-                where: {
-                  node: {
-                    name: parentName,
-                  },
-                },
-              },
-            ],
-          },
+        where: {
+          name,
+        },
+        update: {
           name: values.name,
           content: values.content,
         },
@@ -55,13 +52,22 @@ export function AddNodePage(): JSX.Element {
     });
   };
 
+  const defaultValues = {
+    name: node?.name ?? '',
+    content: node?.content ?? '',
+  };
+
   return (
     <Grid container maxWidth={600} m="200px auto">
       <Grid item xs={12}>
         <Typography variant="h4" component="h1" align="center" gutterBottom>
-          Add Node
+          Update Node
         </Typography>
-        <NodeForm parentNode={parentName} onSubmit={onSubmit} />
+        <NodeForm
+          parentNode={node?.name}
+          defaultValues={defaultValues}
+          onSubmit={onSubmit}
+        />
       </Grid>
     </Grid>
   );
