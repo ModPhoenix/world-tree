@@ -9,7 +9,7 @@ import { ReactNode } from 'react';
 import { generatePath, Outlet, Link as RouterLink } from 'react-router-dom';
 
 import { ReactComponent as Logo } from 'assets/logo.svg';
-import { useRouteMatch } from 'hooks';
+import { useAuth, useRouteMatch } from 'hooks';
 import { Links } from 'settings';
 
 import { AccountMenu } from '../AccountMenu';
@@ -19,6 +19,7 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const { isAuthorized } = useAuth();
   const routeMatch = useRouteMatch([
     Links.index,
     Links.explore,
@@ -115,16 +116,18 @@ export function MainLayout({ children }: MainLayoutProps) {
               />
             </Tabs>
 
-            <Tooltip title="Add Node">
-              <IconButton
-                aria-label="Add Node"
-                href={Links.compose.node}
-                sx={{ mt: 2 }}
-                color="primary"
-              >
-                <AddRoundedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            {isAuthorized && (
+              <Tooltip title="Add Node">
+                <IconButton
+                  aria-label="Add Node"
+                  href={Links.compose.node}
+                  sx={{ mt: 2 }}
+                  color="primary"
+                >
+                  <AddRoundedIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
           </Grid>
 
           <Grid

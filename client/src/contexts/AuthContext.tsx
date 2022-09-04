@@ -51,12 +51,17 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
 
   const [signUpMutation, { client }] = useSignUpMutation();
   const [signInMutation] = useSignInMutation();
-  const { data } = useUsersQuery({
+  const { data: { users: [user] } = { users: [] } } = useUsersQuery({
     skip: !accessToken,
     variables: {
       where: {
         id: getClaims(accessToken)?.sub,
       },
+    },
+    onCompleted: ({ users: [user] } = { users: [] }) => {
+      if (!user) {
+        logout();
+      }
     },
   });
 
@@ -113,7 +118,7 @@ export function AuthProvider({ children }: AuthProviderProps): ReactElement {
   return (
     <AuthContext.Provider
       value={{
-        user: data?.users[0] ?? null,
+        user: user ?? null,
         isAuthorized: Boolean(accessToken),
         signUp,
         signIn,
