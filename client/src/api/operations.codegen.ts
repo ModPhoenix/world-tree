@@ -40,7 +40,7 @@ export type KnowledgesQueryVariables = Types.Exact<{
 }>;
 
 
-export type KnowledgesQuery = { __typename?: 'Query', knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> };
+export type KnowledgesQuery = { __typename?: 'Query', knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }>, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> };
 
 
 export const SignUpDocument = gql`
@@ -204,6 +204,13 @@ export const KnowledgesDocument = gql`
     content
     createdAt
     updatedAt
+    parents {
+      id
+      name
+      content
+      createdAt
+      updatedAt
+    }
     children {
       id
       name

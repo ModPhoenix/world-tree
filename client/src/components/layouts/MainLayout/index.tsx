@@ -12,7 +12,7 @@ import { ReactComponent as Logo } from 'assets/logo.svg';
 import { useAuth, useRouteMatch } from 'hooks';
 import { Links } from 'settings';
 
-import { AccountMenu } from '../AccountMenu';
+import { AccountMenu } from '../../AccountMenu';
 
 interface MainLayoutProps {
   children?: ReactNode;
@@ -143,8 +143,23 @@ export function MainLayout({ children }: MainLayoutProps) {
       </Grid>
       <Grid item container>
         <Grid item component="main" sm={9}>
-          <Outlet />
-          {children}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Box
+              sx={{
+                width: '100%',
+                maxWidth: '692px',
+                mx: 4,
+              }}
+            >
+              <Outlet />
+              {children}
+            </Box>
+          </Box>
         </Grid>
         <Grid
           item

@@ -46,6 +46,13 @@ query Knowledges($where: KnowledgeWhere) {
     content
     createdAt
     updatedAt
+    parents {
+      id
+      name
+      content
+      createdAt
+      updatedAt
+    }
     children {
       id
       name

@@ -3,7 +3,7 @@ type NestedPaths = {
   [key: string]: NestedPaths | string;
 };
 
-type MapNestedPaths<Type extends NestedPaths> = {
+export type MapNestedPaths<Type extends NestedPaths> = {
   [Property in keyof Type]: Type[Property] extends NestedPaths
     ? MapNestedPaths<Type[Property]>
     : Type[Property];

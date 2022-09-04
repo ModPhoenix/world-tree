@@ -7,6 +7,10 @@ export const Paths = {
   index: '/',
   signUp: 'sign-up',
   signIn: 'sign-in',
+  node: {
+    index: 'node',
+    page: ':name',
+  },
   compose: {
     index: 'compose',
     node: 'node',

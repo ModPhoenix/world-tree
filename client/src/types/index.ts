@@ -1,3 +1,5 @@
+import { KnowledgesQuery } from 'api';
+
 export * from './types.codegen';
 
 /**
@@ -13,3 +15,9 @@ export interface Claims {
    */
   iat: number;
 }
+
+export type KnowledgeFromQuery = KnowledgesQuery['knowledges'][0];
+export type KnowledgeChildFromQuery =
+  KnowledgesQuery['knowledges'][0]['children'][0];
+export type KnowledgeParentFromQuery =
+  KnowledgesQuery['knowledges'][0]['parents'][0];
