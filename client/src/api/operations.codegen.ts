@@ -28,21 +28,31 @@ export type UsersQueryVariables = Types.Exact<{
 
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, email: string, username: string, createdAt: string, updatedAt: string }> };
 
+export type KnowledgeNodeFragment = { __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null };
+
 export type KnowledgeCreateMutationVariables = Types.Exact<{
   input: Array<Types.KnowledgeCreateInput> | Types.KnowledgeCreateInput;
 }>;
 
 
-export type KnowledgeCreateMutation = { __typename?: 'Mutation', createKnowledges: { __typename?: 'CreateKnowledgesMutationResponse', info: { __typename?: 'CreateInfo', bookmark?: string | null, nodesCreated: number, relationshipsCreated: number }, knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string }> }> } };
+export type KnowledgeCreateMutation = { __typename?: 'Mutation', createKnowledges: { __typename?: 'CreateKnowledgesMutationResponse', info: { __typename?: 'CreateInfo', bookmark?: string | null, nodesCreated: number, relationshipsCreated: number }, knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> } };
 
 export type KnowledgesQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.KnowledgeWhere>;
 }>;
 
 
-export type KnowledgesQuery = { __typename?: 'Query', knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }>, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> };
+export type KnowledgesQuery = { __typename?: 'Query', knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }>, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> }> };
 
-
+export const KnowledgeNodeFragmentDoc = gql`
+    fragment KnowledgeNode on Knowledge {
+  id
+  name
+  content
+  createdAt
+  updatedAt
+}
+    `;
 export const SignUpDocument = gql`
     mutation SignUp($email: String!, $username: String!, $password: String!) {
   signUp(email: $email, username: $username, password: $password)
@@ -158,18 +168,13 @@ export const KnowledgeCreateDocument = gql`
     }
     knowledges {
       parents {
-        id
-        name
+        ...KnowledgeNode
       }
-      id
-      name
-      content
-      createdAt
-      updatedAt
+      ...KnowledgeNode
     }
   }
 }
-    `;
+    ${KnowledgeNodeFragmentDoc}`;
 export type KnowledgeCreateMutationFn = Apollo.MutationFunction<KnowledgeCreateMutation, KnowledgeCreateMutationVariables>;
 
 /**
@@ -199,28 +204,19 @@ export type KnowledgeCreateMutationOptions = Apollo.BaseMutationOptions<Knowledg
 export const KnowledgesDocument = gql`
     query Knowledges($where: KnowledgeWhere) {
   knowledges(where: $where) {
-    id
-    name
-    content
-    createdAt
-    updatedAt
+    ...KnowledgeNode
     parents {
-      id
-      name
-      content
-      createdAt
-      updatedAt
+      ...KnowledgeNode
     }
     children {
-      id
-      name
-      content
-      createdAt
-      updatedAt
+      ...KnowledgeNode
+      children {
+        ...KnowledgeNode
+      }
     }
   }
 }
-    `;
+    ${KnowledgeNodeFragmentDoc}`;
 
 /**
  * __useKnowledgesQuery__

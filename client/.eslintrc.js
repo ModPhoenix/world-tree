@@ -77,5 +77,6 @@ module.exports = {
         ],
       },
     ], // styled-components enforce macro imports
+    'react/no-children-prop': 'off', // off because New JSX Transform
   },
 };

@@ -22,6 +22,7 @@ export function ListView() {
             key={knowledge.id}
             name={knowledge.name}
             content={knowledge.content}
+            children={knowledge.children}
           />
         ))}
       </Stack>

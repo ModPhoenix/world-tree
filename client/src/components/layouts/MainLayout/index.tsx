@@ -6,11 +6,16 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import { Box, Grid, IconButton, Link, Tab, Tabs, Tooltip } from '@mui/material';
 import { ReactNode } from 'react';
-import { generatePath, Outlet, Link as RouterLink } from 'react-router-dom';
+import {
+  generatePath,
+  Outlet,
+  Link as RouterLink,
+  useParams,
+} from 'react-router-dom';
 
 import { ReactComponent as Logo } from 'assets/logo.svg';
 import { useAuth, useRouteMatch } from 'hooks';
-import { Links } from 'settings';
+import { CREATE_NODE_PARENT_SEARCH_PARAM, Links } from 'settings';
 
 import { AccountMenu } from '../../AccountMenu';
 
@@ -19,6 +24,7 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const { name } = useParams();
   const { isAuthorized } = useAuth();
   const routeMatch = useRouteMatch([
     Links.index,
@@ -29,6 +35,16 @@ export function MainLayout({ children }: MainLayoutProps) {
   ]);
 
   const currentTab = routeMatch?.pattern?.path;
+
+  function composeNodeLink(name?: string): string {
+    if (name) {
+      return `${Links.compose.node}?${new URLSearchParams({
+        [CREATE_NODE_PARENT_SEARCH_PARAM]: name,
+      }).toString()}`;
+    }
+
+    return Links.compose.node;
+  }
 
   return (
     <Grid container wrap="nowrap" minHeight="100vh">
@@ -120,7 +136,7 @@ export function MainLayout({ children }: MainLayoutProps) {
               <Tooltip title="Add Node">
                 <IconButton
                   aria-label="Add Node"
-                  href={Links.compose.node}
+                  href={composeNodeLink(name)}
                   sx={{ mt: 2 }}
                   color="primary"
                 >

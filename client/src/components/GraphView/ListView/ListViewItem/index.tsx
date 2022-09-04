@@ -1,14 +1,16 @@
-import { Link, Typography } from '@mui/material';
+import { Chip, Link, Stack, Typography } from '@mui/material';
 import { generatePath } from 'react-router-dom';
 
+import { KnowledgeNodeFragment } from 'api';
 import { Links } from 'settings';
 
 interface ListViewItemProps {
   name: string;
   content: string;
+  children: KnowledgeNodeFragment[];
 }
 
-export function ListViewItem({ name, content }: ListViewItemProps) {
+export function ListViewItem({ name, content, children }: ListViewItemProps) {
   return (
     <article aria-labelledby="node-name" data-testid="node">
       <Link href={generatePath(Links.node.page, { name })}>
@@ -16,7 +18,19 @@ export function ListViewItem({ name, content }: ListViewItemProps) {
           {name}
         </Typography>
       </Link>
-      <Typography data-testid="nodeContent">{content}</Typography>
+      <Typography data-testid="nodeContent" gutterBottom>
+        {content}
+      </Typography>
+      <Stack spacing={2} direction="row">
+        {children.map((child) => (
+          <Chip
+            key={child.id}
+            label={child.name}
+            component={Link}
+            href={generatePath(Links.node.page, { name: child.name })}
+          />
+        ))}
+      </Stack>
     </article>
   );
 }

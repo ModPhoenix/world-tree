@@ -18,6 +18,14 @@ query Users($where: UserWhere, $options: UserOptions) {
 
 # Knowledge
 
+fragment KnowledgeNode on Knowledge {
+  id
+  name
+  content
+  createdAt
+  updatedAt
+}
+
 mutation KnowledgeCreate($input: [KnowledgeCreateInput!]!) {
   createKnowledges(input: $input) {
     info {
@@ -27,38 +35,24 @@ mutation KnowledgeCreate($input: [KnowledgeCreateInput!]!) {
     }
     knowledges {
       parents {
-        id
-        name
+        ...KnowledgeNode
       }
-      id
-      name
-      content
-      createdAt
-      updatedAt
+      ...KnowledgeNode
     }
   }
 }
 
 query Knowledges($where: KnowledgeWhere) {
   knowledges(where: $where) {
-    id
-    name
-    content
-    createdAt
-    updatedAt
+    ...KnowledgeNode
     parents {
-      id
-      name
-      content
-      createdAt
-      updatedAt
+      ...KnowledgeNode
     }
     children {
-      id
-      name
-      content
-      createdAt
-      updatedAt
+      ...KnowledgeNode
+      children {
+        ...KnowledgeNode
+      }
     }
   }
 }
