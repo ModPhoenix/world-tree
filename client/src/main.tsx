@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { client } from 'api';
+import { ModalProvider } from 'components';
 import { AuthProvider } from 'contexts';
 import { theme } from 'styles';
 
@@ -28,7 +29,9 @@ root.render(
             }}
           >
             <AuthProvider>
-              <App />
+              <ModalProvider>
+                <App />
+              </ModalProvider>
             </AuthProvider>
           </SnackbarProvider>
         </BrowserRouter>

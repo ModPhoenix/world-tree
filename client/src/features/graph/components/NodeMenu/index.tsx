@@ -14,6 +14,7 @@ import { useState, MouseEvent } from 'react';
 import { generatePath, Link, useNavigate } from 'react-router-dom';
 
 import { useDeleteKnowledgesMutation } from 'api';
+import { useModal } from 'components';
 import { useAuth } from 'hooks';
 import { Links } from 'settings';
 import { getCreateNodeLink } from 'utils';
@@ -26,6 +27,7 @@ export function NodeMenu({ nodeName }: NodeMenuProps): JSX.Element {
   const { isAuthorized } = useAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const { enqueueSnackbar } = useSnackbar();
   const [deleteKnowledgesMutation] = useDeleteKnowledgesMutation({
     variables: {
@@ -42,14 +44,28 @@ export function NodeMenu({ nodeName }: NodeMenuProps): JSX.Element {
       enqueueSnackbar(error.message, { variant: 'error' });
     },
   });
+  const openDeleteNodeModal = useModal({
+    title: 'Delete node',
+    description: `Are you sure you want to delete node "${nodeName}"?`,
+    confirmationText: 'Delete',
+    cancellationText: 'Cancel',
+    confirmationButtonProps: {
+      color: 'error',
+    },
+  });
 
-  const open = Boolean(anchorEl);
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDeleteNode = () => {
+    openDeleteNodeModal().then(() => {
+      deleteKnowledgesMutation();
+    });
   };
 
   return (
@@ -99,7 +115,7 @@ export function NodeMenu({ nodeName }: NodeMenuProps): JSX.Element {
           Edit node
         </MenuItem>
         <MenuItem
-          onClick={() => deleteKnowledgesMutation()}
+          onClick={handleDeleteNode}
           sx={(theme) => ({
             color: theme.palette.error.main,
           })}
