@@ -1,5 +1,5 @@
 import { useSnackbar } from 'notistack';
-import { createContext, ReactElement, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -41,7 +41,7 @@ interface AuthProviderProps {
 /**
  * Authorizing the user in the system
  */
-export function AuthProvider({ children }: AuthProviderProps): ReactElement {
+export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 

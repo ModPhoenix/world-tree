@@ -1,12 +1,11 @@
 import Link from '@mui/material/Link';
-import { ReactElement } from 'react';
 
 import { useAuth } from 'hooks';
 import { Links } from 'settings';
 
 import { AuthPageLayout, SignInForm, SignInFormValues } from '../../components';
 
-export function SignInPage(): ReactElement {
+export function SignInPage(): JSX.Element {
   const { signIn } = useAuth();
 
   async function onSubmit(data: SignInFormValues) {

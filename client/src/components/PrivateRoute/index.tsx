@@ -1,4 +1,4 @@
-import { ComponentType, ReactElement } from 'react';
+import { ComponentType } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 import { useAuth } from 'hooks';
@@ -10,7 +10,7 @@ interface PrivateRouteProps {
 
 export function PrivateRoute({
   component: Component,
-}: PrivateRouteProps): ReactElement | null {
+}: PrivateRouteProps): JSX.Element | null {
   const { isAuthorized } = useAuth();
 
   const location = useLocation();

@@ -1,5 +1,4 @@
 import { TextField, TextFieldProps } from '@mui/material';
-import { ReactElement } from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 import { isFieldErrorMessage } from '../utils';
@@ -20,7 +19,7 @@ export function TextFieldControl<T extends FieldValues>({
   onChange: externalOnChange,
   onBlur: externalOnBlur,
   ...textFieldProps
-}: TextFieldControlProps<T>): ReactElement {
+}: TextFieldControlProps<T>): JSX.Element {
   return (
     <Controller
       name={name}

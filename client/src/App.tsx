@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import { useRoutes } from 'react-router-dom';
 
 import { MainLayout } from 'components';
@@ -16,7 +15,7 @@ import {
 } from 'features';
 import { Paths } from 'settings';
 
-export function App(): ReactElement | null {
+export function App(): JSX.Element | null {
   const element = useRoutes([
     {
       path: Paths.index,

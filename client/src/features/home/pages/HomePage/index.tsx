@@ -1,12 +1,5 @@
-import { ReactElement } from 'react';
+import { NodePage } from 'features';
 
-import { PageLayout } from 'components';
-import { ListView } from 'features';
-
-export function HomePage(): ReactElement {
-  return (
-    <PageLayout>
-      <ListView />
-    </PageLayout>
-  );
+export function HomePage(): JSX.Element {
+  return <NodePage />;
 }

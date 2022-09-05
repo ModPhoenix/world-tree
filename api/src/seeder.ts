@@ -2,21 +2,22 @@ import { ogm } from "./gql";
 import { connect  } from "./neo4j";
 
 const Knowledge = ogm.model("Knowledge");
+const ROOT_NODE_NAME = 'Root';
 
 export async function createRootNode() {
   await connect();
   await ogm.init();
 
   const [root] = await Knowledge.find({
-    where: { name: "root" },
+    where: { name: ROOT_NODE_NAME },
   });
 
   if (!root) {
     await Knowledge.create({
       input: [
         {
-          name: "root",
-          content: "Root of the Tree",
+          name: ROOT_NODE_NAME,
+          content: "World Tree root",
         },
       ],
     });

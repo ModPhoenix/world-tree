@@ -1,5 +1,3 @@
-import { ReactElement } from 'react';
-
-export function PeoplePage(): ReactElement {
+export function PeoplePage(): JSX.Element {
   return <div>People Page</div>;
 }

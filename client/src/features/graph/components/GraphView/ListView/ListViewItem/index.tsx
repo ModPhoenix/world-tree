@@ -4,7 +4,7 @@ import { generatePath } from 'react-router-dom';
 import { KnowledgeNodeFragment } from 'api';
 import { Links } from 'settings';
 
-import { NodeMenu } from '../../../../components';
+import { NodeMenu } from '../../..';
 
 interface ListViewItemProps {
   name: string;

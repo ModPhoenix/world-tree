@@ -1,5 +1,3 @@
-import { ReactElement } from 'react';
-
-export function ProfilePage(): ReactElement {
+export function ProfilePage(): JSX.Element {
   return <div>Profile Page</div>;
 }

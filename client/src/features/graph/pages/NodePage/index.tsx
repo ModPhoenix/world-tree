@@ -4,10 +4,10 @@ import { generatePath, useParams } from 'react-router-dom';
 
 import { useKnowledgesQuery } from 'api';
 import { PageLayout } from 'components';
-import { Links } from 'settings';
+import { Links, ROOT_NODE } from 'settings';
 import { KnowledgeFromQuery, KnowledgeParentFromQuery } from 'types';
 
-import { Breadcrumb, Breadcrumbs, NodeMenu } from '../../components';
+import { Breadcrumb, Breadcrumbs, ListView, NodeMenu } from '../../components';
 
 function getBreadcrumbs(
   parent: KnowledgeParentFromQuery | undefined,
@@ -33,7 +33,7 @@ function getBreadcrumbs(
 }
 
 export function NodePage(): JSX.Element {
-  const { name } = useParams();
+  const { name = ROOT_NODE } = useParams();
   const { data } = useKnowledgesQuery({
     variables: {
       where: { name },
@@ -64,6 +64,7 @@ export function NodePage(): JSX.Element {
           </Box>
           <Typography data-testid="nodeContent">{node?.content}</Typography>
         </article>
+        <ListView parentNodeName={name} />
       </Stack>
     </PageLayout>
   );

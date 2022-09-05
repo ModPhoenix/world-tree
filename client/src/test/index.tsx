@@ -4,10 +4,9 @@ import {
   RenderResult,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as React from 'react';
 
 function render(
-  ui: React.ReactElement,
+  ui: JSX.Element,
   options: Omit<RenderOptions, 'queries'> = {},
 ): RenderResult {
   return rtlRender(ui, {
@@ -16,7 +15,7 @@ function render(
   });
 }
 
-function renderWithUser(jsx: React.ReactElement) {
+function renderWithUser(jsx: JSX.Element) {
   return {
     user: userEvent.setup(),
     ...render(jsx),

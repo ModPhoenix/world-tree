@@ -1,5 +1,3 @@
-import { ReactElement } from 'react';
-
-export function EducationPage(): ReactElement {
+export function EducationPage(): JSX.Element {
   return <div>Education Page</div>;
 }

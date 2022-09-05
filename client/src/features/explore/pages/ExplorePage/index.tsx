@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
+import { NodePage } from 'features';
 
-export function ExplorePage(): ReactElement {
-  return <div>Explore Page</div>;
+export function ExplorePage(): JSX.Element {
+  return <NodePage />;
 }

@@ -5,10 +5,16 @@ import { ROOT_NODE } from 'settings';
 
 import { ListViewItem } from './ListViewItem';
 
-export function ListView() {
+interface ListViewProps {
+  parentNodeName?: string;
+}
+
+export function ListView({
+  parentNodeName = ROOT_NODE,
+}: ListViewProps): JSX.Element {
   const { data } = useKnowledgesQuery({
     variables: {
-      where: { name: ROOT_NODE },
+      where: { name: parentNodeName },
     },
   });
 

@@ -1,7 +1,6 @@
 import { styled } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { ReactElement } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 const SignUpFormW = styled('form')``;
@@ -20,7 +19,7 @@ interface SignUpFormProps {
   onSubmit: (data: SignUpFormValues) => void;
 }
 
-export function SignUpForm({ onSubmit }: SignUpFormProps): ReactElement {
+export function SignUpForm({ onSubmit }: SignUpFormProps): JSX.Element {
   const {
     control,
     formState: { isSubmitting },

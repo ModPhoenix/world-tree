@@ -1,2 +1,2 @@
 export * from './pages';
-export * from './components/GraphView';
+export * from './components/graphView';
