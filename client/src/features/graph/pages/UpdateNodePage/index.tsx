@@ -8,9 +8,9 @@ import { Links } from 'settings';
 import { NodeForm, NodeFormValues } from '../../components';
 
 export function UpdateNodePage(): JSX.Element {
+  const { name } = useParams();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { name } = useParams();
   const { data } = useKnowledgesQuery({
     variables: {
       where: { name },
@@ -18,6 +18,11 @@ export function UpdateNodePage(): JSX.Element {
   });
 
   const [node] = data?.knowledges ?? [];
+
+  const defaultValues = {
+    name: node?.name ?? '',
+    content: node?.content ?? '',
+  };
 
   const [updateKnowledgesMutation] = useUpdateKnowledgesMutation({
     onCompleted(data) {
@@ -45,16 +50,11 @@ export function UpdateNodePage(): JSX.Element {
           name,
         },
         update: {
-          name: values.name,
-          content: values.content,
+          name: values.name.trim(),
+          content: values.content.trim(),
         },
       },
     });
-  };
-
-  const defaultValues = {
-    name: node?.name ?? '',
-    content: node?.content ?? '',
   };
 
   return (

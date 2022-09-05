@@ -52,6 +52,13 @@ export type KnowledgesQueryVariables = Types.Exact<{
 
 export type KnowledgesQuery = { __typename?: 'Query', knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }>, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> }> };
 
+export type DeleteKnowledgesMutationVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.KnowledgeWhere>;
+}>;
+
+
+export type DeleteKnowledgesMutation = { __typename?: 'Mutation', deleteKnowledges: { __typename?: 'DeleteInfo', nodesDeleted: number, relationshipsDeleted: number, bookmark?: string | null } };
+
 export const KnowledgeNodeFragmentDoc = gql`
     fragment KnowledgeNode on Knowledge {
   id
@@ -296,3 +303,38 @@ export function useKnowledgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type KnowledgesQueryHookResult = ReturnType<typeof useKnowledgesQuery>;
 export type KnowledgesLazyQueryHookResult = ReturnType<typeof useKnowledgesLazyQuery>;
 export type KnowledgesQueryResult = Apollo.QueryResult<KnowledgesQuery, KnowledgesQueryVariables>;
+export const DeleteKnowledgesDocument = gql`
+    mutation DeleteKnowledges($where: KnowledgeWhere) {
+  deleteKnowledges(where: $where) {
+    nodesDeleted
+    relationshipsDeleted
+    bookmark
+  }
+}
+    `;
+export type DeleteKnowledgesMutationFn = Apollo.MutationFunction<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>;
+
+/**
+ * __useDeleteKnowledgesMutation__
+ *
+ * To run a mutation, you first call `useDeleteKnowledgesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteKnowledgesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteKnowledgesMutation, { data, loading, error }] = useDeleteKnowledgesMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useDeleteKnowledgesMutation(baseOptions?: Apollo.MutationHookOptions<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>(DeleteKnowledgesDocument, options);
+      }
+export type DeleteKnowledgesMutationHookResult = ReturnType<typeof useDeleteKnowledgesMutation>;
+export type DeleteKnowledgesMutationResult = Apollo.MutationResult<DeleteKnowledgesMutation>;
+export type DeleteKnowledgesMutationOptions = Apollo.BaseMutationOptions<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>;

@@ -15,7 +15,8 @@ import {
 
 import { ReactComponent as Logo } from 'assets/logo.svg';
 import { useAuth, useRouteMatch } from 'hooks';
-import { CREATE_NODE_PARENT_SEARCH_PARAM, Links } from 'settings';
+import { Links } from 'settings';
+import { getCreateNodeLink } from 'utils';
 
 import { AccountMenu } from '../../AccountMenu';
 
@@ -35,16 +36,6 @@ export function MainLayout({ children }: MainLayoutProps) {
   ]);
 
   const currentTab = routeMatch?.pattern?.path;
-
-  function composeNodeLink(name?: string): string {
-    if (name) {
-      return `${Links.compose.node}?${new URLSearchParams({
-        [CREATE_NODE_PARENT_SEARCH_PARAM]: name,
-      }).toString()}`;
-    }
-
-    return Links.compose.node;
-  }
 
   return (
     <Grid container wrap="nowrap" minHeight="100vh">
@@ -136,7 +127,7 @@ export function MainLayout({ children }: MainLayoutProps) {
               <Tooltip title="Add Node">
                 <IconButton
                   aria-label="Add Node"
-                  href={composeNodeLink(name)}
+                  href={getCreateNodeLink(name)}
                   sx={{ mt: 2 }}
                   color="primary"
                 >

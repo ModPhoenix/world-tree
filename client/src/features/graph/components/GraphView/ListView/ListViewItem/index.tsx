@@ -1,8 +1,10 @@
-import { Chip, Link, Stack, Typography } from '@mui/material';
+import { Box, Chip, Link, Stack, Typography } from '@mui/material';
 import { generatePath } from 'react-router-dom';
 
 import { KnowledgeNodeFragment } from 'api';
 import { Links } from 'settings';
+
+import { NodeMenu } from '../../../../components';
 
 interface ListViewItemProps {
   name: string;
@@ -13,11 +15,20 @@ interface ListViewItemProps {
 export function ListViewItem({ name, content, children }: ListViewItemProps) {
   return (
     <article aria-labelledby="node-name" data-testid="node">
-      <Link href={generatePath(Links.node.page.index, { name })}>
-        <Typography id="node-name" variant="h5" component="h2">
-          {name}
-        </Typography>
-      </Link>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Link href={generatePath(Links.node.page.index, { name })}>
+          <Typography id="node-name" variant="h5" component="h2">
+            {name}
+          </Typography>
+        </Link>
+        <NodeMenu nodeName={name} />
+      </Box>
       <Typography data-testid="nodeContent" gutterBottom>
         {content}
       </Typography>

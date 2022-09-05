@@ -1,3 +1,5 @@
+# User
+
 mutation SignUp($email: String!, $username: String!, $password: String!) {
   signUp(email: $email, username: $username, password: $password)
 }
@@ -72,5 +74,13 @@ query Knowledges($where: KnowledgeWhere) {
         ...KnowledgeNode
       }
     }
+  }
+}
+
+mutation DeleteKnowledges($where: KnowledgeWhere) {
+  deleteKnowledges(where: $where) {
+    nodesDeleted
+    relationshipsDeleted
+    bookmark
   }
 }

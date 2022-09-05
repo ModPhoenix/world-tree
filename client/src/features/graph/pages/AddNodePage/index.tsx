@@ -48,8 +48,8 @@ export function AddNodePage(): JSX.Element {
               },
             ],
           },
-          name: values.name,
-          content: values.content,
+          name: values.name.trim(),
+          content: values.content.trim(),
         },
       },
     });

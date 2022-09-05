@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 
-import { ListView, PageLayout } from 'components';
+import { PageLayout } from 'components';
+import { ListView } from 'features';
 
 export function HomePage(): ReactElement {
   return (

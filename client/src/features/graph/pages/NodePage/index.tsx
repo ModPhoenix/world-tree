@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import { generatePath, useParams } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ import { PageLayout } from 'components';
 import { Links } from 'settings';
 import { KnowledgeFromQuery, KnowledgeParentFromQuery } from 'types';
 
-import { Breadcrumb, Breadcrumbs } from '../../components';
+import { Breadcrumb, Breadcrumbs, NodeMenu } from '../../components';
 
 function getBreadcrumbs(
   parent: KnowledgeParentFromQuery | undefined,
@@ -50,9 +50,18 @@ export function NodePage(): JSX.Element {
       <Stack spacing={2}>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <article aria-labelledby="node-name" data-testid="node">
-          <Typography id="node-name" variant="h5" component="h1">
-            {name}
-          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography id="node-name" variant="h5" component="h1">
+              {name}
+            </Typography>
+            {node ? <NodeMenu nodeName={node.name} /> : null}
+          </Box>
           <Typography data-testid="nodeContent">{node?.content}</Typography>
         </article>
       </Stack>
