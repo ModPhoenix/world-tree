@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { useKnowledgesQuery } from 'api';
+import { useNodeQuery } from 'api';
 import { ROOT_NODE } from 'settings';
 
 import { ListViewItem } from './ListViewItem';
@@ -12,23 +12,24 @@ interface ListViewProps {
 export function ListView({
   parentNodeName = ROOT_NODE,
 }: ListViewProps): JSX.Element {
-  const { data } = useKnowledgesQuery({
+  const { data } = useNodeQuery({
     variables: {
-      where: { name: parentNodeName },
+      where: {
+        name: parentNodeName,
+      },
     },
   });
-
-  const [root] = data?.knowledges ?? [];
 
   return (
     <section aria-label="Graph: List View">
       <Stack spacing={2}>
-        {root?.children.map((knowledge) => (
+        {data?.node?.children.map((node) => (
           <ListViewItem
-            key={knowledge.id}
-            name={knowledge.name}
-            content={knowledge.content}
-            children={knowledge.children}
+            key={node.id}
+            id={node.id}
+            name={node.name}
+            content={node.content}
+            children={node.children}
           />
         ))}
       </Stack>

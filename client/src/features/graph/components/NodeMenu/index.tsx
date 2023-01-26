@@ -13,29 +13,28 @@ import { useSnackbar } from 'notistack';
 import { useState, MouseEvent } from 'react';
 import { generatePath, Link, useNavigate } from 'react-router-dom';
 
-import { useDeleteKnowledgesMutation } from 'api';
+import { useDeleteNodeMutation } from 'api';
 import { useModal } from 'components';
 import { useAuth } from 'hooks';
 import { Links } from 'settings';
 import { getCreateNodeLink } from 'utils';
 
 interface NodeMenuProps {
+  nodeId: string;
   nodeName: string;
 }
 
-export function NodeMenu({ nodeName }: NodeMenuProps): JSX.Element {
+export function NodeMenu({ nodeId, nodeName }: NodeMenuProps): JSX.Element {
   const { isAuthorized } = useAuth();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { enqueueSnackbar } = useSnackbar();
-  const [deleteKnowledgesMutation] = useDeleteKnowledgesMutation({
+  const [deleteKnowledgesMutation] = useDeleteNodeMutation({
     variables: {
-      where: {
-        name: nodeName,
-      },
+      id: nodeId,
     },
-    refetchQueries: ['Knowledges'],
+    refetchQueries: ['Node'],
     onCompleted() {
       enqueueSnackbar('Node deleted', { variant: 'success' });
       navigate(Links.index);
@@ -99,7 +98,7 @@ export function NodeMenu({ nodeName }: NodeMenuProps): JSX.Element {
           Mark as known
         </MenuItem>
         <Divider />
-        <MenuItem component={Link} to={getCreateNodeLink(nodeName)}>
+        <MenuItem component={Link} to={getCreateNodeLink(nodeId)}>
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>

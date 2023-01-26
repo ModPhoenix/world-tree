@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
-import { useUpdateKnowledgesMutation, useKnowledgesQuery } from 'api';
+import { useUpdateNodeMutation, useNodeQuery } from 'api';
 import { Links } from 'settings';
 
 import { NodeForm, NodeFormValues } from '../../components';
@@ -11,48 +11,38 @@ export function UpdateNodePage(): JSX.Element {
   const { name } = useParams();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { data } = useKnowledgesQuery({
+  const { data: { node } = {} } = useNodeQuery({
     variables: {
       where: { name },
     },
   });
-
-  const [node] = data?.knowledges ?? [];
 
   const defaultValues = {
     name: node?.name ?? '',
     content: node?.content ?? '',
   };
 
-  const [updateKnowledgesMutation] = useUpdateKnowledgesMutation({
-    onCompleted(data) {
-      const [node] = data.updateKnowledges.knowledges;
-
-      if (node) {
-        enqueueSnackbar('Node created', { variant: 'success' });
-        navigate(
-          generatePath(Links.node.page.index, {
-            name: node.name,
-          }),
-        );
-      }
+  const [updateNodeMutation] = useUpdateNodeMutation({
+    onCompleted({ updateNode: node }) {
+      enqueueSnackbar('Node created', { variant: 'success' });
+      navigate(
+        generatePath(Links.node.page.index, {
+          name: node.name,
+        }),
+      );
     },
     onError(error) {
       enqueueSnackbar(error.message, { variant: 'error' });
     },
-    refetchQueries: ['Knowledges'],
+    refetchQueries: ['Node'],
   });
 
   const onSubmit = async (values: NodeFormValues) => {
-    await updateKnowledgesMutation({
+    await updateNodeMutation({
       variables: {
-        where: {
-          name,
-        },
-        update: {
-          name: values.name.trim(),
-          content: values.content.trim(),
-        },
+        id: node?.id ?? '',
+        name: values.name.trim(),
+        content: values.content.trim(),
       },
     });
   };
@@ -64,7 +54,7 @@ export function UpdateNodePage(): JSX.Element {
           Update Node
         </Typography>
         <NodeForm
-          parentNode={node?.name}
+          parentNode={node?.name ?? ''}
           defaultValues={defaultValues}
           onSubmit={onSubmit}
         />

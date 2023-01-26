@@ -1,9 +1,9 @@
 import { CREATE_NODE_PARENT_SEARCH_PARAM, Links } from 'settings';
 
-export function getCreateNodeLink(name?: string): string {
-  if (name) {
+export function getCreateNodeLink(id?: string): string {
+  if (id) {
     return `${Links.compose.node}?${new URLSearchParams({
-      [CREATE_NODE_PARENT_SEARCH_PARAM]: name,
+      [CREATE_NODE_PARENT_SEARCH_PARAM]: id,
     }).toString()}`;
   }
 

@@ -1,18 +1,24 @@
 import { Box, Chip, Link, Stack, Typography } from '@mui/material';
 import { generatePath } from 'react-router-dom';
 
-import { KnowledgeNodeFragment } from 'api';
+import { NodeDataFragment } from 'api';
 import { Links } from 'settings';
 
 import { NodeMenu } from '../../..';
 
 interface ListViewItemProps {
+  id: string;
   name: string;
   content: string;
-  children: KnowledgeNodeFragment[];
+  children: NodeDataFragment[];
 }
 
-export function ListViewItem({ name, content, children }: ListViewItemProps) {
+export function ListViewItem({
+  id,
+  name,
+  content,
+  children,
+}: ListViewItemProps) {
   return (
     <article aria-labelledby="node-name" data-testid="node">
       <Box
@@ -27,7 +33,7 @@ export function ListViewItem({ name, content, children }: ListViewItemProps) {
             {name}
           </Typography>
         </Link>
-        <NodeMenu nodeName={name} />
+        <NodeMenu nodeId={id} nodeName={name} />
       </Box>
       <Typography data-testid="nodeContent" gutterBottom>
         {content}

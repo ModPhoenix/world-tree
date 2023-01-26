@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import { generatePath, useParams } from 'react-router-dom';
 
-import { useKnowledgesQuery } from 'api';
+import { useNodeQuery } from 'api';
 import { PageLayout } from 'components';
 import { Links, ROOT_NODE } from 'settings';
 import { KnowledgeFromQuery, KnowledgeParentFromQuery } from 'types';
@@ -34,13 +34,12 @@ function getBreadcrumbs(
 
 export function NodePage(): JSX.Element {
   const { name = ROOT_NODE } = useParams();
-  const { data } = useKnowledgesQuery({
+  const { data: { node } = {} } = useNodeQuery({
     variables: {
       where: { name },
     },
   });
 
-  const [node] = data?.knowledges ?? [];
   const [parent] = node?.parents ?? [];
 
   const breadcrumbs = getBreadcrumbs(parent, node);
@@ -60,7 +59,7 @@ export function NodePage(): JSX.Element {
             <Typography id="node-name" variant="h5" component="h1">
               {name}
             </Typography>
-            {node ? <NodeMenu nodeName={node.name} /> : null}
+            {node ? <NodeMenu nodeName={node.name} nodeId={node.id} /> : null}
           </Box>
           <Typography data-testid="nodeContent">{node?.content}</Typography>
         </article>

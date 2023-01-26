@@ -5,18 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import {
   SignInMutationVariables,
   SignUpMutationVariables,
-  useUsersQuery,
+  useMeQuery,
   useSignInMutation,
   useSignUpMutation,
 } from 'api';
 import { Links } from 'settings';
 import { User } from 'types';
-import {
-  getAccessToken,
-  getClaims,
-  removeAccessToken,
-  saveAccessToken,
-} from 'utils';
+import { getAccessToken, removeAccessToken, saveAccessToken } from 'utils';
 
 export interface AuthContextState {
   user: User | null;
@@ -51,15 +46,10 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
 
   const [signUpMutation, { client }] = useSignUpMutation();
   const [signInMutation] = useSignInMutation();
-  const { data: { users: [user] } = { users: [] } } = useUsersQuery({
+  const { data } = useMeQuery({
     skip: !accessToken,
-    variables: {
-      where: {
-        id: getClaims(accessToken)?.sub,
-      },
-    },
-    onCompleted: ({ users: [user] } = { users: [] }) => {
-      if (!user) {
+    onError: (e) => {
+      if (e.message === 'Unauthorized') {
         logout();
       }
     },
@@ -118,7 +108,7 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   return (
     <AuthContext.Provider
       value={{
-        user: user ?? null,
+        user: data?.me ?? null,
         isAuthorized: Boolean(accessToken),
         signUp,
         signIn,

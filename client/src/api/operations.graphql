@@ -1,4 +1,4 @@
-# User
+# Auth
 
 mutation SignUp($email: String!, $username: String!, $password: String!) {
   signUp(email: $email, username: $username, password: $password)
@@ -8,8 +8,8 @@ mutation SignIn($email: String!, $password: String!) {
   signIn(email: $email, password: $password)
 }
 
-query Users($where: UserWhere, $options: UserOptions) {
-  users(where: $where, options: $options) {
+query Me {
+  me {
     id
     email
     username
@@ -18,9 +18,9 @@ query Users($where: UserWhere, $options: UserOptions) {
   }
 }
 
-# Knowledge
+# Node
 
-fragment KnowledgeNode on Knowledge {
+fragment NodeData on Node {
   id
   name
   content
@@ -28,59 +28,45 @@ fragment KnowledgeNode on Knowledge {
   updatedAt
 }
 
-mutation CreateKnowledge($input: [KnowledgeCreateInput!]!) {
-  createKnowledges(input: $input) {
-    info {
-      bookmark
-      nodesCreated
-      relationshipsCreated
-    }
-    knowledges {
-      parents {
-        ...KnowledgeNode
-      }
-      ...KnowledgeNode
-    }
-  }
-}
-
-mutation UpdateKnowledges(
-  $where: KnowledgeWhere
-  $update: KnowledgeUpdateInput
-) {
-  updateKnowledges(where: $where, update: $update) {
-    info {
-      nodesCreated
-      nodesDeleted
-      relationshipsCreated
-      relationshipsDeleted
-      bookmark
-    }
-    knowledges {
-      ...KnowledgeNode
-    }
-  }
-}
-
-query Knowledges($where: KnowledgeWhere) {
-  knowledges(where: $where) {
-    ...KnowledgeNode
+query Node($where: NodeWhere!) {
+  node(where: $where) {
+    ...NodeData
     parents {
-      ...KnowledgeNode
+      ...NodeData
     }
     children {
-      ...KnowledgeNode
+      ...NodeData
       children {
-        ...KnowledgeNode
+        ...NodeData
       }
     }
   }
 }
 
-mutation DeleteKnowledges($where: KnowledgeWhere) {
-  deleteKnowledges(where: $where) {
-    nodesDeleted
-    relationshipsDeleted
-    bookmark
+mutation CreateNode($parentId: UUID!, $name: String!, $content: String!) {
+  createNode(parentId: $parentId, name: $name, content: $content) {
+    ...NodeData
+    parents {
+      ...NodeData
+    }
+    children {
+      ...NodeData
+    }
   }
+}
+
+mutation UpdateNode($id: UUID!, $name: String!, $content: String!) {
+  updateNode(id: $id, name: $name, content: $content) {
+    ...NodeData
+    parents {
+      ...NodeData
+    }
+    children {
+      ...NodeData
+    }
+  }
+}
+
+mutation DeleteNode($id: UUID!) {
+  deleteNode(id: $id)
 }

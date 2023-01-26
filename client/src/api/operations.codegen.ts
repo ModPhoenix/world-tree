@@ -10,7 +10,7 @@ export type SignUpMutationVariables = Types.Exact<{
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp?: string | null };
+export type SignUpMutation = { __typename?: 'MutationRoot', signUp: string };
 
 export type SignInMutationVariables = Types.Exact<{
   email: Types.Scalars['String'];
@@ -18,49 +18,49 @@ export type SignInMutationVariables = Types.Exact<{
 }>;
 
 
-export type SignInMutation = { __typename?: 'Mutation', signIn?: string | null };
+export type SignInMutation = { __typename?: 'MutationRoot', signIn: string };
 
-export type UsersQueryVariables = Types.Exact<{
-  where?: Types.InputMaybe<Types.UserWhere>;
-  options?: Types.InputMaybe<Types.UserOptions>;
+export type MeQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'QueryRoot', me: { __typename?: 'User', id: string, email: string, username: string, createdAt: string, updatedAt: string } };
+
+export type NodeDataFragment = { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string };
+
+export type NodeQueryVariables = Types.Exact<{
+  where: Types.NodeWhere;
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, email: string, username: string, createdAt: string, updatedAt: string }> };
+export type NodeQuery = { __typename?: 'QueryRoot', node: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parents: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> } };
 
-export type KnowledgeNodeFragment = { __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null };
-
-export type CreateKnowledgeMutationVariables = Types.Exact<{
-  input: Array<Types.KnowledgeCreateInput> | Types.KnowledgeCreateInput;
+export type CreateNodeMutationVariables = Types.Exact<{
+  parentId: Types.Scalars['UUID'];
+  name: Types.Scalars['String'];
+  content: Types.Scalars['String'];
 }>;
 
 
-export type CreateKnowledgeMutation = { __typename?: 'Mutation', createKnowledges: { __typename?: 'CreateKnowledgesMutationResponse', info: { __typename?: 'CreateInfo', bookmark?: string | null, nodesCreated: number, relationshipsCreated: number }, knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> } };
+export type CreateNodeMutation = { __typename?: 'MutationRoot', createNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parents: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } };
 
-export type UpdateKnowledgesMutationVariables = Types.Exact<{
-  where?: Types.InputMaybe<Types.KnowledgeWhere>;
-  update?: Types.InputMaybe<Types.KnowledgeUpdateInput>;
+export type UpdateNodeMutationVariables = Types.Exact<{
+  id: Types.Scalars['UUID'];
+  name: Types.Scalars['String'];
+  content: Types.Scalars['String'];
 }>;
 
 
-export type UpdateKnowledgesMutation = { __typename?: 'Mutation', updateKnowledges: { __typename?: 'UpdateKnowledgesMutationResponse', info: { __typename?: 'UpdateInfo', nodesCreated: number, nodesDeleted: number, relationshipsCreated: number, relationshipsDeleted: number, bookmark?: string | null }, knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> } };
+export type UpdateNodeMutation = { __typename?: 'MutationRoot', updateNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parents: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } };
 
-export type KnowledgesQueryVariables = Types.Exact<{
-  where?: Types.InputMaybe<Types.KnowledgeWhere>;
+export type DeleteNodeMutationVariables = Types.Exact<{
+  id: Types.Scalars['UUID'];
 }>;
 
 
-export type KnowledgesQuery = { __typename?: 'Query', knowledges: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, parents: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }>, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null, children: Array<{ __typename?: 'Knowledge', id: string, name: string, content: string, createdAt?: string | null, updatedAt?: string | null }> }> }> };
+export type DeleteNodeMutation = { __typename?: 'MutationRoot', deleteNode: boolean };
 
-export type DeleteKnowledgesMutationVariables = Types.Exact<{
-  where?: Types.InputMaybe<Types.KnowledgeWhere>;
-}>;
-
-
-export type DeleteKnowledgesMutation = { __typename?: 'Mutation', deleteKnowledges: { __typename?: 'DeleteInfo', nodesDeleted: number, relationshipsDeleted: number, bookmark?: string | null } };
-
-export const KnowledgeNodeFragmentDoc = gql`
-    fragment KnowledgeNode on Knowledge {
+export const NodeDataFragmentDoc = gql`
+    fragment NodeData on Node {
   id
   name
   content
@@ -133,9 +133,9 @@ export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignI
 export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
 export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
 export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
-export const UsersDocument = gql`
-    query Users($where: UserWhere, $options: UserOptions) {
-  users(where: $where, options: $options) {
+export const MeDocument = gql`
+    query Me {
+  me {
     id
     email
     username
@@ -146,195 +146,185 @@ export const UsersDocument = gql`
     `;
 
 /**
- * __useUsersQuery__
+ * __useMeQuery__
  *
- * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUsersQuery({
+ * const { data, loading, error } = useMeQuery({
  *   variables: {
- *      where: // value for 'where'
- *      options: // value for 'options'
  *   },
  * });
  */
-export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
       }
-export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
         }
-export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
-export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
-export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
-export const CreateKnowledgeDocument = gql`
-    mutation CreateKnowledge($input: [KnowledgeCreateInput!]!) {
-  createKnowledges(input: $input) {
-    info {
-      bookmark
-      nodesCreated
-      relationshipsCreated
-    }
-    knowledges {
-      parents {
-        ...KnowledgeNode
-      }
-      ...KnowledgeNode
-    }
-  }
-}
-    ${KnowledgeNodeFragmentDoc}`;
-export type CreateKnowledgeMutationFn = Apollo.MutationFunction<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>;
-
-/**
- * __useCreateKnowledgeMutation__
- *
- * To run a mutation, you first call `useCreateKnowledgeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateKnowledgeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createKnowledgeMutation, { data, loading, error }] = useCreateKnowledgeMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateKnowledgeMutation(baseOptions?: Apollo.MutationHookOptions<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>(CreateKnowledgeDocument, options);
-      }
-export type CreateKnowledgeMutationHookResult = ReturnType<typeof useCreateKnowledgeMutation>;
-export type CreateKnowledgeMutationResult = Apollo.MutationResult<CreateKnowledgeMutation>;
-export type CreateKnowledgeMutationOptions = Apollo.BaseMutationOptions<CreateKnowledgeMutation, CreateKnowledgeMutationVariables>;
-export const UpdateKnowledgesDocument = gql`
-    mutation UpdateKnowledges($where: KnowledgeWhere, $update: KnowledgeUpdateInput) {
-  updateKnowledges(where: $where, update: $update) {
-    info {
-      nodesCreated
-      nodesDeleted
-      relationshipsCreated
-      relationshipsDeleted
-      bookmark
-    }
-    knowledges {
-      ...KnowledgeNode
-    }
-  }
-}
-    ${KnowledgeNodeFragmentDoc}`;
-export type UpdateKnowledgesMutationFn = Apollo.MutationFunction<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>;
-
-/**
- * __useUpdateKnowledgesMutation__
- *
- * To run a mutation, you first call `useUpdateKnowledgesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateKnowledgesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateKnowledgesMutation, { data, loading, error }] = useUpdateKnowledgesMutation({
- *   variables: {
- *      where: // value for 'where'
- *      update: // value for 'update'
- *   },
- * });
- */
-export function useUpdateKnowledgesMutation(baseOptions?: Apollo.MutationHookOptions<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>(UpdateKnowledgesDocument, options);
-      }
-export type UpdateKnowledgesMutationHookResult = ReturnType<typeof useUpdateKnowledgesMutation>;
-export type UpdateKnowledgesMutationResult = Apollo.MutationResult<UpdateKnowledgesMutation>;
-export type UpdateKnowledgesMutationOptions = Apollo.BaseMutationOptions<UpdateKnowledgesMutation, UpdateKnowledgesMutationVariables>;
-export const KnowledgesDocument = gql`
-    query Knowledges($where: KnowledgeWhere) {
-  knowledges(where: $where) {
-    ...KnowledgeNode
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const NodeDocument = gql`
+    query Node($where: NodeWhere!) {
+  node(where: $where) {
+    ...NodeData
     parents {
-      ...KnowledgeNode
+      ...NodeData
     }
     children {
-      ...KnowledgeNode
+      ...NodeData
       children {
-        ...KnowledgeNode
+        ...NodeData
       }
     }
   }
 }
-    ${KnowledgeNodeFragmentDoc}`;
+    ${NodeDataFragmentDoc}`;
 
 /**
- * __useKnowledgesQuery__
+ * __useNodeQuery__
  *
- * To run a query within a React component, call `useKnowledgesQuery` and pass it any options that fit your needs.
- * When your component renders, `useKnowledgesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useNodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useKnowledgesQuery({
+ * const { data, loading, error } = useNodeQuery({
  *   variables: {
  *      where: // value for 'where'
  *   },
  * });
  */
-export function useKnowledgesQuery(baseOptions?: Apollo.QueryHookOptions<KnowledgesQuery, KnowledgesQueryVariables>) {
+export function useNodeQuery(baseOptions: Apollo.QueryHookOptions<NodeQuery, NodeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<KnowledgesQuery, KnowledgesQueryVariables>(KnowledgesDocument, options);
+        return Apollo.useQuery<NodeQuery, NodeQueryVariables>(NodeDocument, options);
       }
-export function useKnowledgesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<KnowledgesQuery, KnowledgesQueryVariables>) {
+export function useNodeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NodeQuery, NodeQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<KnowledgesQuery, KnowledgesQueryVariables>(KnowledgesDocument, options);
+          return Apollo.useLazyQuery<NodeQuery, NodeQueryVariables>(NodeDocument, options);
         }
-export type KnowledgesQueryHookResult = ReturnType<typeof useKnowledgesQuery>;
-export type KnowledgesLazyQueryHookResult = ReturnType<typeof useKnowledgesLazyQuery>;
-export type KnowledgesQueryResult = Apollo.QueryResult<KnowledgesQuery, KnowledgesQueryVariables>;
-export const DeleteKnowledgesDocument = gql`
-    mutation DeleteKnowledges($where: KnowledgeWhere) {
-  deleteKnowledges(where: $where) {
-    nodesDeleted
-    relationshipsDeleted
-    bookmark
+export type NodeQueryHookResult = ReturnType<typeof useNodeQuery>;
+export type NodeLazyQueryHookResult = ReturnType<typeof useNodeLazyQuery>;
+export type NodeQueryResult = Apollo.QueryResult<NodeQuery, NodeQueryVariables>;
+export const CreateNodeDocument = gql`
+    mutation CreateNode($parentId: UUID!, $name: String!, $content: String!) {
+  createNode(parentId: $parentId, name: $name, content: $content) {
+    ...NodeData
+    parents {
+      ...NodeData
+    }
+    children {
+      ...NodeData
+    }
   }
 }
-    `;
-export type DeleteKnowledgesMutationFn = Apollo.MutationFunction<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>;
+    ${NodeDataFragmentDoc}`;
+export type CreateNodeMutationFn = Apollo.MutationFunction<CreateNodeMutation, CreateNodeMutationVariables>;
 
 /**
- * __useDeleteKnowledgesMutation__
+ * __useCreateNodeMutation__
  *
- * To run a mutation, you first call `useDeleteKnowledgesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteKnowledgesMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateNodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNodeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [deleteKnowledgesMutation, { data, loading, error }] = useDeleteKnowledgesMutation({
+ * const [createNodeMutation, { data, loading, error }] = useCreateNodeMutation({
  *   variables: {
- *      where: // value for 'where'
+ *      parentId: // value for 'parentId'
+ *      name: // value for 'name'
+ *      content: // value for 'content'
  *   },
  * });
  */
-export function useDeleteKnowledgesMutation(baseOptions?: Apollo.MutationHookOptions<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>) {
+export function useCreateNodeMutation(baseOptions?: Apollo.MutationHookOptions<CreateNodeMutation, CreateNodeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>(DeleteKnowledgesDocument, options);
+        return Apollo.useMutation<CreateNodeMutation, CreateNodeMutationVariables>(CreateNodeDocument, options);
       }
-export type DeleteKnowledgesMutationHookResult = ReturnType<typeof useDeleteKnowledgesMutation>;
-export type DeleteKnowledgesMutationResult = Apollo.MutationResult<DeleteKnowledgesMutation>;
-export type DeleteKnowledgesMutationOptions = Apollo.BaseMutationOptions<DeleteKnowledgesMutation, DeleteKnowledgesMutationVariables>;
+export type CreateNodeMutationHookResult = ReturnType<typeof useCreateNodeMutation>;
+export type CreateNodeMutationResult = Apollo.MutationResult<CreateNodeMutation>;
+export type CreateNodeMutationOptions = Apollo.BaseMutationOptions<CreateNodeMutation, CreateNodeMutationVariables>;
+export const UpdateNodeDocument = gql`
+    mutation UpdateNode($id: UUID!, $name: String!, $content: String!) {
+  updateNode(id: $id, name: $name, content: $content) {
+    ...NodeData
+    parents {
+      ...NodeData
+    }
+    children {
+      ...NodeData
+    }
+  }
+}
+    ${NodeDataFragmentDoc}`;
+export type UpdateNodeMutationFn = Apollo.MutationFunction<UpdateNodeMutation, UpdateNodeMutationVariables>;
+
+/**
+ * __useUpdateNodeMutation__
+ *
+ * To run a mutation, you first call `useUpdateNodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNodeMutation, { data, loading, error }] = useUpdateNodeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      content: // value for 'content'
+ *   },
+ * });
+ */
+export function useUpdateNodeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNodeMutation, UpdateNodeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateNodeMutation, UpdateNodeMutationVariables>(UpdateNodeDocument, options);
+      }
+export type UpdateNodeMutationHookResult = ReturnType<typeof useUpdateNodeMutation>;
+export type UpdateNodeMutationResult = Apollo.MutationResult<UpdateNodeMutation>;
+export type UpdateNodeMutationOptions = Apollo.BaseMutationOptions<UpdateNodeMutation, UpdateNodeMutationVariables>;
+export const DeleteNodeDocument = gql`
+    mutation DeleteNode($id: UUID!) {
+  deleteNode(id: $id)
+}
+    `;
+export type DeleteNodeMutationFn = Apollo.MutationFunction<DeleteNodeMutation, DeleteNodeMutationVariables>;
+
+/**
+ * __useDeleteNodeMutation__
+ *
+ * To run a mutation, you first call `useDeleteNodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNodeMutation, { data, loading, error }] = useDeleteNodeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteNodeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNodeMutation, DeleteNodeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteNodeMutation, DeleteNodeMutationVariables>(DeleteNodeDocument, options);
+      }
+export type DeleteNodeMutationHookResult = ReturnType<typeof useDeleteNodeMutation>;
+export type DeleteNodeMutationResult = Apollo.MutationResult<DeleteNodeMutation>;
+export type DeleteNodeMutationOptions = Apollo.BaseMutationOptions<DeleteNodeMutation, DeleteNodeMutationVariables>;
