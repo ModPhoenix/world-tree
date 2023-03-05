@@ -9,7 +9,7 @@ export function SignUpPage(): JSX.Element {
   const { signUp } = useAuth();
 
   async function onSubmit(data: SignUpFormValues) {
-    await signUp?.(data);
+    await signUp?.({ input: data });
   }
 
   return (

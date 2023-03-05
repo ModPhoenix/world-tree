@@ -1,21 +1,21 @@
 import { Stack } from '@mui/material';
 
 import { useNodeQuery } from 'api';
-import { ROOT_NODE } from 'settings';
+import { ROOT_NODE_ID } from 'settings';
 
 import { ListViewItem } from './ListViewItem';
 
 interface ListViewProps {
-  parentNodeName?: string;
+  parentNodeId?: string;
 }
 
 export function ListView({
-  parentNodeName = ROOT_NODE,
+  parentNodeId = ROOT_NODE_ID,
 }: ListViewProps): JSX.Element {
   const { data } = useNodeQuery({
     variables: {
       where: {
-        name: parentNodeName,
+        id: parentNodeId,
       },
     },
   });

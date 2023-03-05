@@ -28,7 +28,7 @@ export function ListViewItem({
           alignItems: 'center',
         }}
       >
-        <Link href={generatePath(Links.node.page.index, { name })}>
+        <Link href={generatePath(Links.node.page.index, { id })}>
           <Typography id="node-name" variant="h5" component="h2">
             {name}
           </Typography>
@@ -44,7 +44,7 @@ export function ListViewItem({
             key={child.id}
             label={child.name}
             component={Link}
-            href={generatePath(Links.node.page.index, { name: child.name })}
+            href={generatePath(Links.node.page.index, { id: child.id })}
           />
         ))}
       </Stack>

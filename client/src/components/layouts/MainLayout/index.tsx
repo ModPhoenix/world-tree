@@ -25,7 +25,7 @@ interface MainLayoutProps {
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
-  const { name } = useParams();
+  const { id } = useParams();
   const { isAuthorized } = useAuth();
   const routeMatch = useRouteMatch([
     Links.index,
@@ -127,7 +127,7 @@ export function MainLayout({ children }: MainLayoutProps) {
               <Tooltip title="Add Node">
                 <IconButton
                   aria-label="Add Node"
-                  href={getCreateNodeLink(name)}
+                  href={getCreateNodeLink(id)}
                   sx={{ mt: 2 }}
                   color="primary"
                 >

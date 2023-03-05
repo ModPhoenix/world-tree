@@ -3,17 +3,17 @@ import { useSnackbar } from 'notistack';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
 import { useUpdateNodeMutation, useNodeQuery } from 'api';
-import { Links } from 'settings';
+import { Links, ROOT_NODE_ID } from 'settings';
 
 import { NodeForm, NodeFormValues } from '../../components';
 
 export function UpdateNodePage(): JSX.Element {
-  const { name } = useParams();
+  const { id = ROOT_NODE_ID } = useParams();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { data: { node } = {} } = useNodeQuery({
     variables: {
-      where: { name },
+      where: { id },
     },
   });
 
@@ -27,7 +27,7 @@ export function UpdateNodePage(): JSX.Element {
       enqueueSnackbar('Node created', { variant: 'success' });
       navigate(
         generatePath(Links.node.page.index, {
-          name: node.name,
+          id: node.id,
         }),
       );
     },
@@ -40,9 +40,11 @@ export function UpdateNodePage(): JSX.Element {
   const onSubmit = async (values: NodeFormValues) => {
     await updateNodeMutation({
       variables: {
-        id: node?.id ?? '',
-        name: values.name.trim(),
-        content: values.content.trim(),
+        input: {
+          id: node?.id ?? '',
+          name: values.name.trim(),
+          content: values.content.trim(),
+        },
       },
     });
   };

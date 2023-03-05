@@ -9,7 +9,7 @@ export function SignInPage(): JSX.Element {
   const { signIn } = useAuth();
 
   async function onSubmit(data: SignInFormValues) {
-    await signIn?.(data);
+    await signIn?.({ input: data });
   }
 
   return (

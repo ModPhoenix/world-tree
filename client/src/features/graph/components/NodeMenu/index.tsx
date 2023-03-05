@@ -32,7 +32,9 @@ export function NodeMenu({ nodeId, nodeName }: NodeMenuProps): JSX.Element {
   const { enqueueSnackbar } = useSnackbar();
   const [deleteKnowledgesMutation] = useDeleteNodeMutation({
     variables: {
-      id: nodeId,
+      where: {
+        id: nodeId,
+      },
     },
     refetchQueries: ['Node'],
     onCompleted() {
@@ -106,7 +108,7 @@ export function NodeMenu({ nodeId, nodeName }: NodeMenuProps): JSX.Element {
         </MenuItem>
         <MenuItem
           component={Link}
-          to={generatePath(Links.node.page.update, { name: nodeName })}
+          to={generatePath(Links.node.page.update, { id: nodeId })}
         >
           <ListItemIcon>
             <EditIcon />

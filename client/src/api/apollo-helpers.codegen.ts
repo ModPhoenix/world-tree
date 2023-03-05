@@ -7,14 +7,16 @@ export type MutationRootFieldPolicy = {
 	signUp?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateNode?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type NodeKeySpecifier = ('children' | 'content' | 'createdAt' | 'id' | 'name' | 'parents' | 'updatedAt' | NodeKeySpecifier)[];
+export type NodeKeySpecifier = ('children' | 'content' | 'context' | 'createdAt' | 'id' | 'meanings' | 'name' | 'parent' | 'updatedAt' | NodeKeySpecifier)[];
 export type NodeFieldPolicy = {
 	children?: FieldPolicy<any> | FieldReadFunction<any>,
 	content?: FieldPolicy<any> | FieldReadFunction<any>,
+	context?: FieldPolicy<any> | FieldReadFunction<any>,
 	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	meanings?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
-	parents?: FieldPolicy<any> | FieldReadFunction<any>,
+	parent?: FieldPolicy<any> | FieldReadFunction<any>,
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type QueryRootKeySpecifier = ('me' | 'node' | QueryRootKeySpecifier)[];

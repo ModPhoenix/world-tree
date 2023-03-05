@@ -4,17 +4,14 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type SignUpMutationVariables = Types.Exact<{
-  email: Types.Scalars['String'];
-  username: Types.Scalars['String'];
-  password: Types.Scalars['String'];
+  input: Types.SignUpInput;
 }>;
 
 
 export type SignUpMutation = { __typename?: 'MutationRoot', signUp: string };
 
 export type SignInMutationVariables = Types.Exact<{
-  email: Types.Scalars['String'];
-  password: Types.Scalars['String'];
+  input: Types.SignInInput;
 }>;
 
 
@@ -27,33 +24,31 @@ export type MeQuery = { __typename?: 'QueryRoot', me: { __typename?: 'User', id:
 
 export type NodeDataFragment = { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string };
 
+export type NodeFragment = { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parent?: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } | null, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, meanings: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> };
+
 export type NodeQueryVariables = Types.Exact<{
-  where: Types.NodeWhere;
+  where: Types.GetNodeInput;
 }>;
 
 
-export type NodeQuery = { __typename?: 'QueryRoot', node: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parents: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> } };
+export type NodeQuery = { __typename?: 'QueryRoot', node: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parent?: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } | null, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, meanings: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> } };
 
 export type CreateNodeMutationVariables = Types.Exact<{
-  parentId: Types.Scalars['UUID'];
-  name: Types.Scalars['String'];
-  content: Types.Scalars['String'];
+  input: Types.NewNodeInput;
 }>;
 
 
-export type CreateNodeMutation = { __typename?: 'MutationRoot', createNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parents: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } };
+export type CreateNodeMutation = { __typename?: 'MutationRoot', createNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parent?: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } | null, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, meanings: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> } };
 
 export type UpdateNodeMutationVariables = Types.Exact<{
-  id: Types.Scalars['UUID'];
-  name: Types.Scalars['String'];
-  content: Types.Scalars['String'];
+  input: Types.UpdateNodeInput;
 }>;
 
 
-export type UpdateNodeMutation = { __typename?: 'MutationRoot', updateNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parents: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } };
+export type UpdateNodeMutation = { __typename?: 'MutationRoot', updateNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parent?: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } | null, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, meanings: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> } };
 
 export type DeleteNodeMutationVariables = Types.Exact<{
-  id: Types.Scalars['UUID'];
+  where: Types.DeleteNodeInput;
 }>;
 
 
@@ -68,9 +63,35 @@ export const NodeDataFragmentDoc = gql`
   updatedAt
 }
     `;
+export const NodeFragmentDoc = gql`
+    fragment Node on Node {
+  ...NodeData
+  parent {
+    ...NodeData
+    children {
+      ...NodeData
+    }
+  }
+  context {
+    ...NodeData
+  }
+  meanings {
+    ...NodeData
+    context {
+      ...NodeData
+    }
+  }
+  children {
+    ...NodeData
+    children {
+      ...NodeData
+    }
+  }
+}
+    ${NodeDataFragmentDoc}`;
 export const SignUpDocument = gql`
-    mutation SignUp($email: String!, $username: String!, $password: String!) {
-  signUp(email: $email, username: $username, password: $password)
+    mutation SignUp($input: SignUpInput!) {
+  signUp(input: $input)
 }
     `;
 export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
@@ -88,9 +109,7 @@ export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMut
  * @example
  * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
  *   variables: {
- *      email: // value for 'email'
- *      username: // value for 'username'
- *      password: // value for 'password'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -102,8 +121,8 @@ export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
 export const SignInDocument = gql`
-    mutation SignIn($email: String!, $password: String!) {
-  signIn(email: $email, password: $password)
+    mutation SignIn($input: SignInInput!) {
+  signIn(input: $input)
 }
     `;
 export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMutationVariables>;
@@ -121,8 +140,7 @@ export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMut
  * @example
  * const [signInMutation, { data, loading, error }] = useSignInMutation({
  *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -172,21 +190,12 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const NodeDocument = gql`
-    query Node($where: NodeWhere!) {
+    query Node($where: GetNodeInput!) {
   node(where: $where) {
-    ...NodeData
-    parents {
-      ...NodeData
-    }
-    children {
-      ...NodeData
-      children {
-        ...NodeData
-      }
-    }
+    ...Node
   }
 }
-    ${NodeDataFragmentDoc}`;
+    ${NodeFragmentDoc}`;
 
 /**
  * __useNodeQuery__
@@ -216,18 +225,12 @@ export type NodeQueryHookResult = ReturnType<typeof useNodeQuery>;
 export type NodeLazyQueryHookResult = ReturnType<typeof useNodeLazyQuery>;
 export type NodeQueryResult = Apollo.QueryResult<NodeQuery, NodeQueryVariables>;
 export const CreateNodeDocument = gql`
-    mutation CreateNode($parentId: UUID!, $name: String!, $content: String!) {
-  createNode(parentId: $parentId, name: $name, content: $content) {
-    ...NodeData
-    parents {
-      ...NodeData
-    }
-    children {
-      ...NodeData
-    }
+    mutation CreateNode($input: NewNodeInput!) {
+  createNode(input: $input) {
+    ...Node
   }
 }
-    ${NodeDataFragmentDoc}`;
+    ${NodeFragmentDoc}`;
 export type CreateNodeMutationFn = Apollo.MutationFunction<CreateNodeMutation, CreateNodeMutationVariables>;
 
 /**
@@ -243,9 +246,7 @@ export type CreateNodeMutationFn = Apollo.MutationFunction<CreateNodeMutation, C
  * @example
  * const [createNodeMutation, { data, loading, error }] = useCreateNodeMutation({
  *   variables: {
- *      parentId: // value for 'parentId'
- *      name: // value for 'name'
- *      content: // value for 'content'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -257,18 +258,12 @@ export type CreateNodeMutationHookResult = ReturnType<typeof useCreateNodeMutati
 export type CreateNodeMutationResult = Apollo.MutationResult<CreateNodeMutation>;
 export type CreateNodeMutationOptions = Apollo.BaseMutationOptions<CreateNodeMutation, CreateNodeMutationVariables>;
 export const UpdateNodeDocument = gql`
-    mutation UpdateNode($id: UUID!, $name: String!, $content: String!) {
-  updateNode(id: $id, name: $name, content: $content) {
-    ...NodeData
-    parents {
-      ...NodeData
-    }
-    children {
-      ...NodeData
-    }
+    mutation UpdateNode($input: UpdateNodeInput!) {
+  updateNode(input: $input) {
+    ...Node
   }
 }
-    ${NodeDataFragmentDoc}`;
+    ${NodeFragmentDoc}`;
 export type UpdateNodeMutationFn = Apollo.MutationFunction<UpdateNodeMutation, UpdateNodeMutationVariables>;
 
 /**
@@ -284,9 +279,7 @@ export type UpdateNodeMutationFn = Apollo.MutationFunction<UpdateNodeMutation, U
  * @example
  * const [updateNodeMutation, { data, loading, error }] = useUpdateNodeMutation({
  *   variables: {
- *      id: // value for 'id'
- *      name: // value for 'name'
- *      content: // value for 'content'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -298,8 +291,8 @@ export type UpdateNodeMutationHookResult = ReturnType<typeof useUpdateNodeMutati
 export type UpdateNodeMutationResult = Apollo.MutationResult<UpdateNodeMutation>;
 export type UpdateNodeMutationOptions = Apollo.BaseMutationOptions<UpdateNodeMutation, UpdateNodeMutationVariables>;
 export const DeleteNodeDocument = gql`
-    mutation DeleteNode($id: UUID!) {
-  deleteNode(id: $id)
+    mutation DeleteNode($where: DeleteNodeInput!) {
+  deleteNode(where: $where)
 }
     `;
 export type DeleteNodeMutationFn = Apollo.MutationFunction<DeleteNodeMutation, DeleteNodeMutationVariables>;
@@ -317,7 +310,7 @@ export type DeleteNodeMutationFn = Apollo.MutationFunction<DeleteNodeMutation, D
  * @example
  * const [deleteNodeMutation, { data, loading, error }] = useDeleteNodeMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      where: // value for 'where'
  *   },
  * });
  */

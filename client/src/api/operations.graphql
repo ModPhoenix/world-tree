@@ -1,11 +1,11 @@
 # Auth
 
-mutation SignUp($email: String!, $username: String!, $password: String!) {
-  signUp(email: $email, username: $username, password: $password)
+mutation SignUp($input: SignUpInput!) {
+  signUp(input: $input)
 }
 
-mutation SignIn($email: String!, $password: String!) {
-  signIn(email: $email, password: $password)
+mutation SignIn($input: SignInInput!) {
+  signIn(input: $input)
 }
 
 query Me {
@@ -28,45 +28,49 @@ fragment NodeData on Node {
   updatedAt
 }
 
-query Node($where: NodeWhere!) {
+fragment Node on Node {
+  ...NodeData
+  parent {
+    ...NodeData
+    children {
+      ...NodeData
+    }
+  }
+  context {
+    ...NodeData
+  }
+  meanings {
+    ...NodeData
+    context {
+      ...NodeData
+    }
+  }
+  children {
+    ...NodeData
+    children {
+      ...NodeData
+    }
+  }
+}
+
+query Node($where: GetNodeInput!) {
   node(where: $where) {
-    ...NodeData
-    parents {
-      ...NodeData
-    }
-    children {
-      ...NodeData
-      children {
-        ...NodeData
-      }
-    }
+    ...Node
   }
 }
 
-mutation CreateNode($parentId: UUID!, $name: String!, $content: String!) {
-  createNode(parentId: $parentId, name: $name, content: $content) {
-    ...NodeData
-    parents {
-      ...NodeData
-    }
-    children {
-      ...NodeData
-    }
+mutation CreateNode($input: NewNodeInput!) {
+  createNode(input: $input) {
+    ...Node
   }
 }
 
-mutation UpdateNode($id: UUID!, $name: String!, $content: String!) {
-  updateNode(id: $id, name: $name, content: $content) {
-    ...NodeData
-    parents {
-      ...NodeData
-    }
-    children {
-      ...NodeData
-    }
+mutation UpdateNode($input: UpdateNodeInput!) {
+  updateNode(input: $input) {
+    ...Node
   }
 }
 
-mutation DeleteNode($id: UUID!) {
-  deleteNode(id: $id)
+mutation DeleteNode($where: DeleteNodeInput!) {
+  deleteNode(where: $where)
 }

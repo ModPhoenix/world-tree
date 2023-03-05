@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import { generatePath, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useCreateNodeMutation } from 'api';
-import { CREATE_NODE_PARENT_SEARCH_PARAM, Links, ROOT_NODE } from 'settings';
+import { CREATE_NODE_PARENT_SEARCH_PARAM, Links, ROOT_NODE_ID } from 'settings';
 
 import { NodeForm, NodeFormValues } from '../../components';
 
@@ -12,14 +12,14 @@ export function AddNodePage(): JSX.Element {
   const { enqueueSnackbar } = useSnackbar();
   const [searchParams] = useSearchParams();
   const parentName =
-    searchParams.get(CREATE_NODE_PARENT_SEARCH_PARAM) || ROOT_NODE;
+    searchParams.get(CREATE_NODE_PARENT_SEARCH_PARAM) || ROOT_NODE_ID;
 
   const [createNodeMutation] = useCreateNodeMutation({
     onCompleted({ createNode: node }) {
       enqueueSnackbar('Node created', { variant: 'success' });
       navigate(
         generatePath(Links.node.page.index, {
-          name: node.name,
+          id: node.id,
         }),
       );
     },
@@ -32,9 +32,11 @@ export function AddNodePage(): JSX.Element {
   const onSubmit = async (values: NodeFormValues) => {
     await createNodeMutation({
       variables: {
-        parentId: parentName,
-        name: values.name.trim(),
-        content: values.content.trim(),
+        input: {
+          parentId: parentName,
+          name: values.name.trim(),
+          content: values.content.trim(),
+        },
       },
     });
   };

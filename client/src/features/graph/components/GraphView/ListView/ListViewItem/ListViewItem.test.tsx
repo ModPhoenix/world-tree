@@ -7,6 +7,7 @@ describe('<ListViewItem />', () => {
     const nodeName = 'Chaos';
     render(
       <ListViewItem
+        id="1"
         name={nodeName}
         content="Root node of World Tree"
         children={[]}

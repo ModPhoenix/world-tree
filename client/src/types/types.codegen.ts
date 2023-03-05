@@ -14,6 +14,14 @@ export type Scalars = {
   UUID: string;
 };
 
+export type DeleteNodeInput = {
+  id: Scalars['String'];
+};
+
+export type GetNodeInput = {
+  id: Scalars['String'];
+};
+
 export type MutationRoot = {
   __typename?: 'MutationRoot';
   createNode: Node;
@@ -25,50 +33,46 @@ export type MutationRoot = {
 
 
 export type MutationRootCreateNodeArgs = {
-  content: Scalars['String'];
-  name: Scalars['String'];
-  parentId: Scalars['UUID'];
+  input: NewNodeInput;
 };
 
 
 export type MutationRootDeleteNodeArgs = {
-  id: Scalars['UUID'];
+  where: DeleteNodeInput;
 };
 
 
 export type MutationRootSignInArgs = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  input: SignInInput;
 };
 
 
 export type MutationRootSignUpArgs = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-  username: Scalars['String'];
+  input: SignUpInput;
 };
 
 
 export type MutationRootUpdateNodeArgs = {
+  input: UpdateNodeInput;
+};
+
+export type NewNodeInput = {
   content: Scalars['String'];
-  id: Scalars['UUID'];
   name: Scalars['String'];
+  parentId?: InputMaybe<Scalars['String']>;
 };
 
 export type Node = {
   __typename?: 'Node';
   children: Array<Node>;
   content: Scalars['String'];
+  context: Array<Node>;
   createdAt: Scalars['DateTime'];
-  id: Scalars['UUID'];
+  id: Scalars['String'];
+  meanings: Array<Node>;
   name: Scalars['String'];
-  parents: Array<Node>;
+  parent?: Maybe<Node>;
   updatedAt: Scalars['DateTime'];
-};
-
-export type NodeWhere = {
-  id?: InputMaybe<Scalars['UUID']>;
-  name?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryRoot = {
@@ -79,7 +83,24 @@ export type QueryRoot = {
 
 
 export type QueryRootNodeArgs = {
-  where: NodeWhere;
+  where: GetNodeInput;
+};
+
+export type SignInInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type SignUpInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type UpdateNodeInput = {
+  content?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {

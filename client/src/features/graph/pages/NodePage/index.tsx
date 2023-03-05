@@ -1,53 +1,74 @@
 import { Box, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import { generatePath, useParams } from 'react-router-dom';
+import { generatePath, Link, useParams } from 'react-router-dom';
 
 import { useNodeQuery } from 'api';
 import { PageLayout } from 'components';
-import { Links, ROOT_NODE } from 'settings';
-import { KnowledgeFromQuery, KnowledgeParentFromQuery } from 'types';
+import { Links, ROOT_NODE_ID } from 'settings';
+import {
+  NodeFromQuery,
+  NodeContextFromQuery,
+  NodeParentFromQuery,
+} from 'types';
 
 import { Breadcrumb, Breadcrumbs, ListView, NodeMenu } from '../../components';
 
 function getBreadcrumbs(
-  parent: KnowledgeParentFromQuery | undefined,
-  node: KnowledgeFromQuery | undefined,
-): Breadcrumb[] {
+  context: NodeContextFromQuery,
+  node: NodeFromQuery | undefined,
+  parent: NodeParentFromQuery,
+): [Breadcrumb[], Breadcrumb[]] {
   const breadcrumbs: Breadcrumb[] = [];
+  const siblings: Breadcrumb[] = [];
 
-  if (parent) {
+  const reverseContext = [...context].reverse();
+
+  reverseContext.forEach((node) => {
     breadcrumbs.push({
-      label: parent.name,
-      href: generatePath(Links.node.page.index, { name: parent.name }),
+      label: node.name,
+      href: generatePath(Links.node.page.index, { id: node.id }),
     });
-  }
+  });
 
   if (node) {
     breadcrumbs.push({
       label: node.name,
-      href: generatePath(Links.node.page.index, { name: node.name }),
+      href: generatePath(Links.node.page.index, { id: node.id }),
     });
   }
 
-  return breadcrumbs;
+  if (parent) {
+    parent.children.forEach((child) => {
+      if (child.name !== node?.name) {
+        siblings.push({
+          label: child.name,
+          href: generatePath(Links.node.page.index, { id: child.id }),
+        });
+      }
+    });
+  }
+
+  return [breadcrumbs, siblings];
 }
 
 export function NodePage(): JSX.Element {
-  const { name = ROOT_NODE } = useParams();
+  const { id = ROOT_NODE_ID } = useParams();
   const { data: { node } = {} } = useNodeQuery({
     variables: {
-      where: { name },
+      where: { id },
     },
   });
 
-  const [parent] = node?.parents ?? [];
-
-  const breadcrumbs = getBreadcrumbs(parent, node);
+  const [breadcrumbs, siblings] = getBreadcrumbs(
+    node?.context ?? [],
+    node,
+    node?.parent,
+  );
 
   return (
     <PageLayout>
       <Stack spacing={2}>
-        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        <Breadcrumbs breadcrumbs={breadcrumbs} siblings={siblings} />
         <article aria-labelledby="node-name" data-testid="node">
           <Box
             sx={{
@@ -57,13 +78,29 @@ export function NodePage(): JSX.Element {
             }}
           >
             <Typography id="node-name" variant="h5" component="h1">
-              {name}
+              {node?.name}
             </Typography>
             {node ? <NodeMenu nodeName={node.name} nodeId={node.id} /> : null}
           </Box>
           <Typography data-testid="nodeContent">{node?.content}</Typography>
+
+          {node?.meanings?.length ?? 0 > 0 ? (
+            <Typography variant="h6" component="h4" my={2}>
+              Meanings
+            </Typography>
+          ) : null}
+          <ul>
+            {node?.meanings.map((node) => (
+              <li key={node.id}>
+                <Link to={generatePath(Links.node.page.index, { id: node.id })}>
+                  {node.name} -{' '}
+                  {node.context.map((node) => node.name).join(' > ')}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </article>
-        <ListView parentNodeName={name} />
+        <ListView parentNodeId={node?.id} />
       </Stack>
     </PageLayout>
   );

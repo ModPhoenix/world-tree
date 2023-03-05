@@ -10,7 +10,7 @@ export const Paths = {
   node: {
     index: 'node',
     page: {
-      index: ':name',
+      index: ':id',
       update: 'update',
     },
   },
