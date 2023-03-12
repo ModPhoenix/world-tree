@@ -18,6 +18,11 @@ export type DeleteNodeInput = {
   id: Scalars['String'];
 };
 
+export type GetNodeChildrenInput = {
+  limit?: Scalars['Int'];
+  offset?: Scalars['Int'];
+};
+
 export type GetNodeInput = {
   id: Scalars['String'];
 };
@@ -73,6 +78,11 @@ export type Node = {
   name: Scalars['String'];
   parent?: Maybe<Node>;
   updatedAt: Scalars['DateTime'];
+};
+
+
+export type NodeChildrenArgs = {
+  input?: InputMaybe<GetNodeChildrenInput>;
 };
 
 export type QueryRoot = {

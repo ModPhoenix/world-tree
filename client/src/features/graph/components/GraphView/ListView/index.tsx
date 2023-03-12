@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { CircularProgress, Pagination, Stack } from '@mui/material';
 
 import { useNodeQuery } from 'api';
 import { ROOT_NODE_ID } from 'settings';
@@ -12,7 +12,7 @@ interface ListViewProps {
 export function ListView({
   parentNodeId = ROOT_NODE_ID,
 }: ListViewProps): JSX.Element {
-  const { data } = useNodeQuery({
+  const { data, loading } = useNodeQuery({
     variables: {
       where: {
         id: parentNodeId,
@@ -22,17 +22,24 @@ export function ListView({
 
   return (
     <section aria-label="Graph: List View">
-      <Stack spacing={2}>
-        {data?.node?.children.map((node) => (
-          <ListViewItem
-            key={node.id}
-            id={node.id}
-            name={node.name}
-            content={node.content}
-            children={node.children}
-          />
-        ))}
-      </Stack>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Stack spacing={2}>
+            {data?.node?.children.map((node) => (
+              <ListViewItem
+                key={node.id}
+                id={node.id}
+                name={node.name}
+                content={node.content}
+                children={node.children}
+              />
+            ))}
+            <Pagination count={10} />
+          </Stack>
+        </>
+      )}
     </section>
   );
 }

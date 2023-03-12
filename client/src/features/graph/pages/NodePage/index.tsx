@@ -67,7 +67,12 @@ export function NodePage(): JSX.Element {
 
   return (
     <PageLayout>
-      <Stack spacing={2}>
+      <Stack
+        spacing={2}
+        sx={{
+          overflow: 'hidden',
+        }}
+      >
         <Breadcrumbs breadcrumbs={breadcrumbs} siblings={siblings} />
         <article aria-labelledby="node-name" data-testid="node">
           <Box

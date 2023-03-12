@@ -24,10 +24,11 @@ export type MeQuery = { __typename?: 'QueryRoot', me: { __typename?: 'User', id:
 
 export type NodeDataFragment = { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string };
 
-export type NodeFragment = { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parent?: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } | null, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, meanings: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> };
-
 export type NodeQueryVariables = Types.Exact<{
   where: Types.GetNodeInput;
+  parentChildren?: Types.InputMaybe<Types.GetNodeChildrenInput>;
+  children?: Types.InputMaybe<Types.GetNodeChildrenInput>;
+  childrenChildren?: Types.InputMaybe<Types.GetNodeChildrenInput>;
 }>;
 
 
@@ -38,14 +39,14 @@ export type CreateNodeMutationVariables = Types.Exact<{
 }>;
 
 
-export type CreateNodeMutation = { __typename?: 'MutationRoot', createNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parent?: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } | null, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, meanings: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> } };
+export type CreateNodeMutation = { __typename?: 'MutationRoot', createNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string } };
 
 export type UpdateNodeMutationVariables = Types.Exact<{
   input: Types.UpdateNodeInput;
 }>;
 
 
-export type UpdateNodeMutation = { __typename?: 'MutationRoot', updateNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, parent?: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> } | null, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }>, meanings: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, context: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }>, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string, children: Array<{ __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string }> }> } };
+export type UpdateNodeMutation = { __typename?: 'MutationRoot', updateNode: { __typename?: 'Node', id: string, name: string, content: string, createdAt: string, updatedAt: string } };
 
 export type DeleteNodeMutationVariables = Types.Exact<{
   where: Types.DeleteNodeInput;
@@ -63,32 +64,6 @@ export const NodeDataFragmentDoc = gql`
   updatedAt
 }
     `;
-export const NodeFragmentDoc = gql`
-    fragment Node on Node {
-  ...NodeData
-  parent {
-    ...NodeData
-    children {
-      ...NodeData
-    }
-  }
-  context {
-    ...NodeData
-  }
-  meanings {
-    ...NodeData
-    context {
-      ...NodeData
-    }
-  }
-  children {
-    ...NodeData
-    children {
-      ...NodeData
-    }
-  }
-}
-    ${NodeDataFragmentDoc}`;
 export const SignUpDocument = gql`
     mutation SignUp($input: SignUpInput!) {
   signUp(input: $input)
@@ -190,12 +165,33 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const NodeDocument = gql`
-    query Node($where: GetNodeInput!) {
+    query Node($where: GetNodeInput!, $parentChildren: GetNodeChildrenInput, $children: GetNodeChildrenInput, $childrenChildren: GetNodeChildrenInput) {
   node(where: $where) {
-    ...Node
+    ...NodeData
+    parent {
+      ...NodeData
+      children(input: $parentChildren) {
+        ...NodeData
+      }
+    }
+    context {
+      ...NodeData
+    }
+    meanings {
+      ...NodeData
+      context {
+        ...NodeData
+      }
+    }
+    children(input: $children) {
+      ...NodeData
+      children(input: $childrenChildren) {
+        ...NodeData
+      }
+    }
   }
 }
-    ${NodeFragmentDoc}`;
+    ${NodeDataFragmentDoc}`;
 
 /**
  * __useNodeQuery__
@@ -210,6 +206,9 @@ export const NodeDocument = gql`
  * const { data, loading, error } = useNodeQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      parentChildren: // value for 'parentChildren'
+ *      children: // value for 'children'
+ *      childrenChildren: // value for 'childrenChildren'
  *   },
  * });
  */
@@ -227,10 +226,10 @@ export type NodeQueryResult = Apollo.QueryResult<NodeQuery, NodeQueryVariables>;
 export const CreateNodeDocument = gql`
     mutation CreateNode($input: NewNodeInput!) {
   createNode(input: $input) {
-    ...Node
+    ...NodeData
   }
 }
-    ${NodeFragmentDoc}`;
+    ${NodeDataFragmentDoc}`;
 export type CreateNodeMutationFn = Apollo.MutationFunction<CreateNodeMutation, CreateNodeMutationVariables>;
 
 /**
@@ -260,10 +259,10 @@ export type CreateNodeMutationOptions = Apollo.BaseMutationOptions<CreateNodeMut
 export const UpdateNodeDocument = gql`
     mutation UpdateNode($input: UpdateNodeInput!) {
   updateNode(input: $input) {
-    ...Node
+    ...NodeData
   }
 }
-    ${NodeFragmentDoc}`;
+    ${NodeDataFragmentDoc}`;
 export type UpdateNodeMutationFn = Apollo.MutationFunction<UpdateNodeMutation, UpdateNodeMutationVariables>;
 
 /**

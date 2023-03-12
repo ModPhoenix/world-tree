@@ -28,11 +28,13 @@ fragment NodeData on Node {
   updatedAt
 }
 
-fragment Node on Node {
-  ...NodeData
+
+query Node($where: GetNodeInput!, $parentChildren: GetNodeChildrenInput, $children: GetNodeChildrenInput, $childrenChildren: GetNodeChildrenInput) {
+  node(where: $where) {
+     ...NodeData
   parent {
     ...NodeData
-    children {
+    children(input: $parentChildren) {
       ...NodeData
     }
   }
@@ -45,29 +47,24 @@ fragment Node on Node {
       ...NodeData
     }
   }
-  children {
+  children(input: $children) {
     ...NodeData
-    children {
+    children(input: $childrenChildren) {
       ...NodeData
     }
   }
-}
-
-query Node($where: GetNodeInput!) {
-  node(where: $where) {
-    ...Node
   }
 }
 
 mutation CreateNode($input: NewNodeInput!) {
   createNode(input: $input) {
-    ...Node
+    ...NodeData
   }
 }
 
 mutation UpdateNode($input: UpdateNodeInput!) {
   updateNode(input: $input) {
-    ...Node
+    ...NodeData
   }
 }
 
